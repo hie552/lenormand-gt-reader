@@ -49,3 +49,36 @@ body {
   margin-top: 20px;
   font-size: 18px;
 }
+
+.card {
+  position: relative;
+  cursor: pointer;
+}
+
+.card.selected img {
+  outline: 3px solid gold;
+  box-shadow: 0 0 15px gold;
+}
+
+/* 번호 라벨 */
+.card-label {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 12px;
+  display: none;
+}
+
+.card-label span {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  margin-right: 4px;
+  border-radius: 4px;
+}
+
+/* 하우스 번호 오른쪽 */
+.house-num {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
