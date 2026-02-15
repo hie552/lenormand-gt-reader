@@ -72,35 +72,40 @@
 
 <!-- 오라클 모달 -->
 <div id="oracle-modal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content oracle-modal-content">
     <span class="close" id="oracle-close">&times;</span>
     <h3>오늘의 마법 조언</h3>
-    <div class="oracle-cards">
-      <div class="oracle-card" id="house-card">
-        <div class="oracle-card-inner">
-          <div class="oracle-card-face oracle-card-back">
-            <img src="images/lenormand/back.png" alt="Card back">
+    <div id="oracle-container">
+      <div class="oracle-cards">
+        <div class="oracle-card" id="house-card">
+          <div class="oracle-card-inner">
+            <div class="oracle-card-face oracle-card-back">
+              <img src="images/lenormand/back.png" alt="Card back">
+            </div>
+            <div class="oracle-card-face oracle-card-front">
+              <img id="house-img" src="" alt="House">
+            </div>
           </div>
-          <div class="oracle-card-face oracle-card-front">
-            <img id="house-img" src="" alt="House">
-          </div>
+          <p id="house-name"></p>
         </div>
-        <p id="house-name"></p>
-      </div>
-      <div class="oracle-card" id="spell-card">
-        <div class="oracle-card-inner">
-          <div class="oracle-card-face oracle-card-back">
-            <img src="images/lenormand/back.png" alt="Card back">
+        <div class="oracle-card" id="spell-card">
+          <div class="oracle-card-inner">
+            <div class="oracle-card-face oracle-card-back">
+              <img src="images/lenormand/back.png" alt="Card back">
+            </div>
+            <div class="oracle-card-face oracle-card-front">
+              <img id="spell-img" src="" alt="Spell">
+            </div>
           </div>
-          <div class="oracle-card-face oracle-card-front">
-            <img id="spell-img" src="" alt="Spell">
-          </div>
+          <p id="spell-name"></p>
         </div>
-        <p id="spell-name"></p>
       </div>
+      <div id="oracle-message"></div>
     </div>
-    <div id="oracle-message"></div>
-    <button id="draw-oracle">조언 뽑기</button>
+    <div class="oracle-buttons">
+      <button id="draw-oracle">조언 뽑기</button>
+      <button id="save-oracle">조언 저장</button>
+    </div>
   </div>
 </div>
 
