@@ -1,9 +1,9 @@
-// js/oracle.js
-
 const oracleBtn = document.getElementById("oracle-btn");
-const modal = document.getElementById("oracle-modal");
-const closeBtn = document.querySelector(".close");
+const oracleModal = document.getElementById("oracle-modal");
+const oracleClose = document.getElementById("oracle-close");
 const drawButton = document.getElementById("draw-oracle");
+const houseCard = document.getElementById("house-card");
+const spellCard = document.getElementById("spell-card");
 const houseImg = document.getElementById("house-img");
 const houseName = document.getElementById("house-name");
 const spellImg = document.getElementById("spell-img");
@@ -62,7 +62,9 @@ function generateAdvice(house, spell) {
 }
 
 oracleBtn.onclick = () => {
-  modal.style.display = "block";
+  oracleModal.style.display = "block";
+  houseCard.classList.remove("revealed");
+  spellCard.classList.remove("revealed");
   message.textContent = "조언 뽑기 버튼을 눌러주세요.";
   houseImg.src = "";
   spellImg.src = "";
@@ -70,25 +72,31 @@ oracleBtn.onclick = () => {
   spellName.textContent = "";
 };
 
-closeBtn.onclick = () => {
-  modal.style.display = "none";
+oracleClose.onclick = () => {
+  oracleModal.style.display = "none";
 };
 
-window.onclick = (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
-drawButton.addEventListener("click", () => {
+drawButton.addEventListener("click", async () => {
+  houseCard.classList.remove("revealed");
+  spellCard.classList.remove("revealed");
+  message.textContent = "카드를 뽑는 중...";
+  
+  await new Promise(r => setTimeout(r, 300));
+  
   const house = drawRandom(houses);
   const spell = drawRandom(spells);
 
   houseImg.src = house.image;
+  spellImg.src = spell.image;
+  
+  await new Promise(r => setTimeout(r, 200));
+  houseCard.classList.add("revealed");
   houseName.textContent = house.name;
   
-  spellImg.src = spell.image;
-  spellName.textContent = `${spell.name} (${spell.meaning})`;
+  await new Promise(r => setTimeout(r, 400));
+  spellCard.classList.add("revealed");
+  spellName.textContent = spell.name;
 
+  await new Promise(r => setTimeout(r, 400));
   message.textContent = generateAdvice(house, spell);
 });
