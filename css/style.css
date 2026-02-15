@@ -594,11 +594,11 @@ button:active {
 
   #tableau {
     gap: 1vw;
-    padding-top: 40px;
+    padding-top: 25px;
   }
 
   .card-label {
-    top: -35px;
+    top: -20px;
   }
 
   .card-label span {
@@ -674,11 +674,11 @@ button:active {
   }
 
   #tableau {
-    padding-top: 45px;
+    padding-top: 20px;
   }
 
   .card-label {
-    top: -38px;
+    top: -18px;
   }
 
   .card-label span {
