@@ -2,8 +2,10 @@ body {
   background: #111;
   color: #eee;
   font-family: serif;
+  text-align: center;
 }
 
+/* 전체 그랑타블로 */
 #tableau {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -12,12 +14,15 @@ body {
   margin: 40px auto;
 }
 
-.card {
-  border: 1px solid #444;
-  cursor: pointer;
-}
-
+/* 카드 기본 */
 .card img {
   width: 100%;
   display: block;
+  border: 1px solid #444;
 }
+
+/* 마지막 4장 위치 조정 */
+.final-card:nth-of-type(33) { grid-column: 3; grid-row: 5; }
+.final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
+.final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
+.final-card:nth-of-type(36) { grid-column: 6; grid-row: 5; }
