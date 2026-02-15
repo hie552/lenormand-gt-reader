@@ -2,8 +2,9 @@
 
 body {
   background-image: url("../images/lenormand/background_0.png");
-  background-size: 400px;
-  background-repeat: repeat;
+  background-size: cover; /* 화면 전체를 덮도록 */
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 
   margin: 0;
@@ -14,7 +15,7 @@ body {
   position: relative;
 }
 
-/* 배경 오버레이 (밝게) */
+/* 배경 오버레이 (약간만 어둡게) */
 body::before {
   content: "";
   position: fixed;
@@ -22,29 +23,32 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7); /* 밝은 흰색 오버레이 */
-  z-index: -1;
+  background: rgba(0, 0, 0, 0.15); /* 아주 약간만 어둡게 */
+  z-index: 0;
 }
 
 /* ===== 헤더 ===== */
 
 .header {
   padding: 20px 0 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .header h1 {
   margin: 0 0 8px;
   font-size: 2.5em;
-  color: #b8860b; /* 더 진한 금색 */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: #8B6914; /* 진한 황금색 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
+               0 0 10px rgba(255, 215, 0, 0.3);
   font-weight: bold;
 }
 
 .header h2 {
   margin: 0;
   font-size: 1.3em;
-  color: #333; /* 더 진한 회색 */
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+  color: #4a4a4a; /* 진한 회색 */
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-weight: normal;
   font-style: italic;
 }
@@ -53,22 +57,26 @@ body::before {
 
 .controls {
   margin: 12px 0 20px;
+  position: relative;
+  z-index: 1;
 }
 
 button {
   padding: 8px 14px;
   margin: 4px;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: serif;
   transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
-  background: rgba(255, 215, 0, 0.9);
+  background: rgba(255, 215, 0, 0.95);
   border-color: #ffd700;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== GT GRID ===== */
@@ -111,8 +119,9 @@ button:hover {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  background: white; /* 카드 배경 추가 */
+  background: white;
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .card-front {
@@ -127,7 +136,7 @@ button:hover {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block; /* 이미지가 확실히 표시되도록 */
+  display: block;
 }
 
 /* ===== 상태 ===== */
