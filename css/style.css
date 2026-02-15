@@ -2,9 +2,9 @@
 
 body {
   background-image: url("../images/lenormand/background_0.png");
-  background-size: cover;
+  background-size: 200px 200px; /* 작게 만들기 */
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat; /* 바둑판식 반복 */
   background-attachment: fixed;
 
   margin: 0;
@@ -15,7 +15,7 @@ body {
   position: relative;
 }
 
-/* 배경 오버레이 (연하게) */
+/* 배경 오버레이 (더 밝게) */
 body::before {
   content: "";
   position: fixed;
@@ -23,7 +23,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.7); /* 밝은 흰색 오버레이 */
   z-index: -1;
 }
 
@@ -36,7 +36,7 @@ body::before {
 .header h1 {
   margin: 0 0 8px;
   font-size: 2.5em;
-  color: #ffd700;
+  color: #b8860b; /* 더 진한 금색 */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: bold;
 }
@@ -44,8 +44,8 @@ body::before {
 .header h2 {
   margin: 0;
   font-size: 1.3em;
-  color: #e6e6e6;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  color: #333; /* 더 진한 회색 */
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
   font-weight: normal;
   font-style: italic;
 }
@@ -82,6 +82,8 @@ button:hover {
   width: 96vw;
   max-width: 1200px;
   margin: 0 auto 40px;
+  position: relative;
+  z-index: 1; /* 카드가 보이도록 */
 }
 
 /* ⭐ 핵심: 카드 자체가 크기를 가짐 */
@@ -110,16 +112,23 @@ button:hover {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
+  background: white; /* 카드 배경 추가 */
+  border-radius: 8px;
 }
 
 .card-front {
   transform: rotateY(180deg);
 }
 
+.card-back {
+  background: white;
+}
+
 .card-face img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block; /* 이미지가 확실히 표시되도록 */
 }
 
 /* ===== 상태 ===== */
@@ -127,11 +136,13 @@ button:hover {
 .card.selected {
   outline: 3px solid gold;
   box-shadow: 0 0 12px gold;
+  z-index: 10;
 }
 
 .card.chain {
   outline: 3px solid #4fd1c5;
   box-shadow: 0 0 12px #4fd1c5;
+  z-index: 10;
 }
 
 .card.dimmed {
@@ -145,7 +156,7 @@ button:hover {
   top: 4px;
   left: 4px;
   display: none;
-  z-index: 5;
+  z-index: 15;
 }
 
 .card-label span {
@@ -154,6 +165,7 @@ button:hover {
   border-radius: 4px;
   font-size: 11px;
   margin-right: 3px;
+  color: white;
 }
 
 /* ===== 마지막 4장 (33-36번 카드를 27-30번 아래 배치) ===== */
