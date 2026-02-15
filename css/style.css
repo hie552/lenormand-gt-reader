@@ -1,5 +1,5 @@
 body {
-  background: url("../images/lenormand/background_0.png") center/cover no-repeat fixed;
+  background: url("./images/lenormand/background_0.png") center/cover no-repeat fixed;
   color: #eee;
   font-family: serif;
   text-align: center;
@@ -7,7 +7,7 @@ body {
 }
 
 .controls {
-  margin: 10px 0 20px;
+  margin: 12px 0 20px;
 }
 
 button {
@@ -29,21 +29,37 @@ button {
 
 .card {
   position: relative;
-  perspective: 800px;
+  perspective: 900px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.card.revealed .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  transform: rotateY(180deg);
 }
 
 .card img {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: contain;
-  transition: transform 0.25s ease;
-  transform: rotateY(180deg);
 }
 
-.card.revealed img {
-  transform: rotateY(0deg);
-}
-
+/* 선택 / 체인 */
 .card.selected img {
   outline: 3px solid gold;
   box-shadow: 0 0 12px gold;
@@ -65,6 +81,7 @@ button {
   left: 4px;
   font-size: 11px;
   display: none;
+  z-index: 5;
 }
 
 .card-label span {
