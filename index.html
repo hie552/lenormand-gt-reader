@@ -1,26 +1,25 @@
-<h1>Lenormand Grand Tableau</h1>
-<button id="toggle-labels">카드 번호 / 하우스 번호 보기</button>
-<div id="tableau"></div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Lenormand Grand Tableau</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-<button id="chain-mode">체인 리딩 모드</button>
+<h1>Lenormand Grand Tableau</h1>
+
+<div class="controls">
+  <button id="reveal-cards">카드 펼치기</button>
+  <button id="toggle-labels">번호 / 하우스</button>
+  <button id="chain-mode">체인 리딩</button>
+  <button id="save-reading">리딩 저장</button>
+</div>
+
+<div id="tableau"></div>
 
 <script src="js/data.js"></script>
 <script src="js/gt.js"></script>
 
-<hr>
-
-<h2>🪄 Oracle Advice</h2>
-
-<button id="draw-oracle">조언 뽑기</button>
-
-<div id="oracle-area">
-  <div class="oracle-card" id="house-card"></div>
-  <div class="oracle-card" id="spell-card"></div>
-</div>
-
-<p id="oracle-message"></p>
-
-<script src="js/oracleData.js"></script>
-<script src="js/oracle.js"></script>
-
-
+</body>
+</html>
