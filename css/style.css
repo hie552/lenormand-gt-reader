@@ -2,20 +2,19 @@
 
 body {
   background-image: url("../images/lenormand/background_0.png");
-  background-size: cover; /* 화면 전체를 덮도록 */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 
   margin: 0;
+  padding: 0;
   min-height: 100vh;
-  color: #eee;
-  font-family: serif;
+  font-family: 'Georgia', serif;
   text-align: center;
-  position: relative;
 }
 
-/* 배경 오버레이 (약간만 어둡게) */
+/* 배경 오버레이 */
 body::before {
   content: "";
   position: fixed;
@@ -23,31 +22,34 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.15); /* 아주 약간만 어둡게 */
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
   z-index: 0;
 }
 
 /* ===== 헤더 ===== */
 
 .header {
-  padding: 20px 0 10px;
+  padding: 30px 0 15px;
   position: relative;
   z-index: 1;
 }
 
 .header h1 {
-  margin: 0 0 8px;
-  font-size: 2.5em;
-  color: #8B6914; /* 진한 황금색 */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
-               0 0 10px rgba(255, 215, 0, 0.3);
+  margin: 0 0 10px;
+  font-size: 3em;
+  color: #B8860B;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(184, 134, 11, 0.4);
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .header h2 {
   margin: 0;
-  font-size: 1.3em;
-  color: #4a4a4a; /* 진한 회색 */
+  font-size: 1.4em;
+  color: #666;
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-weight: normal;
   font-style: italic;
@@ -56,27 +58,34 @@ body::before {
 /* ===== 컨트롤 ===== */
 
 .controls {
-  margin: 12px 0 20px;
+  margin: 20px 0 30px;
   position: relative;
   z-index: 1;
 }
 
 button {
-  padding: 8px 14px;
-  margin: 4px;
+  padding: 10px 18px;
+  margin: 5px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: serif;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid #B8860B;
+  border-radius: 6px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
-  background: rgba(255, 215, 0, 0.95);
-  border-color: #ffd700;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  background: #B8860B;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 /* ===== GT GRID ===== */
@@ -84,31 +93,30 @@ button:hover {
 #tableau {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 0.6vw;
-
+  gap: 0.8vw;
   width: 96vw;
   max-width: 1200px;
   margin: 0 auto 40px;
   position: relative;
-  z-index: 1; /* 카드가 보이도록 */
+  z-index: 1;
 }
 
-/* ⭐ 핵심: 카드 자체가 크기를 가짐 */
+/* 카드 */
 .card {
   position: relative;
   width: 100%;
   aspect-ratio: 2 / 3;
   perspective: 1000px;
+  cursor: pointer;
 }
 
-/* ===== 뒤집기 구조 ===== */
-
+/* 뒤집기 구조 */
 .card-inner {
   width: 100%;
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  transition: transform 0.6s ease;
 }
 
 .card.revealed .card-inner {
@@ -120,64 +128,63 @@ button:hover {
   inset: 0;
   backface-visibility: hidden;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
 .card-front {
   transform: rotateY(180deg);
 }
 
-.card-back {
-  background: white;
-}
-
 .card-face img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
-/* ===== 상태 ===== */
-
+/* 상태 */
 .card.selected {
-  outline: 3px solid gold;
-  box-shadow: 0 0 12px gold;
+  outline: 4px solid #FFD700;
+  outline-offset: 2px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   z-index: 10;
 }
 
 .card.chain {
-  outline: 3px solid #4fd1c5;
-  box-shadow: 0 0 12px #4fd1c5;
+  outline: 4px solid #4fd1c5;
+  outline-offset: 2px;
+  box-shadow: 0 0 20px rgba(79, 209, 197, 0.8);
   z-index: 10;
 }
 
 .card.dimmed {
-  opacity: 0.35;
+  opacity: 0.4;
+  filter: grayscale(50%);
 }
 
-/* ===== 라벨 ===== */
-
+/* 라벨 */
 .card-label {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 6px;
+  left: 6px;
   display: none;
-  z-index: 15;
+  z-index: 20;
+  pointer-events: none;
 }
 
 .card-label span {
-  background: rgba(0,0,0,0.7);
-  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 3px 7px;
   border-radius: 4px;
-  font-size: 11px;
-  margin-right: 3px;
+  font-size: 12px;
+  margin-right: 4px;
   color: white;
+  display: inline-block;
 }
 
-/* ===== 마지막 4장 (33-36번 카드를 27-30번 아래 배치) ===== */
-
+/* 마지막 4장 */
 .final-card:nth-of-type(33) { 
   grid-column: 3; 
   grid-row: 5; 
@@ -200,49 +207,54 @@ button:hover {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 2000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 .modal-content {
-  background-color: #2a2a3e;
-  margin: 5% auto;
-  padding: 30px;
-  border: 2px solid #ffd700;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+  margin: 3% auto;
+  padding: 40px;
+  border: 3px solid #B8860B;
+  border-radius: 15px;
+  width: 85%;
+  max-width: 650px;
+  box-shadow: 0 8px 30px rgba(184, 134, 11, 0.5);
+  position: relative;
 }
 
 .modal-content h3 {
   margin-top: 0;
-  color: #ffd700;
-  font-size: 1.8em;
+  color: #FFD700;
+  font-size: 2em;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .close {
   color: #aaa;
-  float: right;
-  font-size: 28px;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 32px;
   font-weight: bold;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
 .close:hover,
 .close:focus {
-  color: #ffd700;
+  color: #FFD700;
 }
 
 .oracle-cards {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin: 30px 0;
+  gap: 40px;
+  margin: 40px 0;
 }
 
 .oracle-card {
@@ -250,40 +262,53 @@ button:hover {
 }
 
 .oracle-card img {
-  width: 150px;
+  width: 180px;
   height: auto;
-  border: 2px solid #ffd700;
-  border-radius: 8px;
+  border: 3px solid #B8860B;
+  border-radius: 10px;
   background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s;
+}
+
+.oracle-card img:hover {
+  transform: scale(1.05);
 }
 
 .oracle-card p {
-  margin-top: 10px;
-  font-size: 1.2em;
-  color: #e6e6e6;
+  margin-top: 12px;
+  font-size: 1.3em;
+  color: #FFD700;
   font-weight: bold;
 }
 
 #oracle-message {
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid #ffd700;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
-  font-size: 1.1em;
-  line-height: 1.6;
+  background: rgba(184, 134, 11, 0.15);
+  border: 2px solid #B8860B;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 25px 0;
+  font-size: 1.15em;
+  line-height: 1.8;
   color: #f0f0f0;
-  min-height: 80px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #draw-oracle {
-  background: #ffd700;
-  color: #2a2a3e;
+  background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+  color: #1a1a2e;
   font-weight: bold;
-  font-size: 1.1em;
-  padding: 12px 24px;
+  font-size: 1.2em;
+  padding: 14px 30px;
+  border: none;
+  box-shadow: 0 4px 10px rgba(184, 134, 11, 0.5);
 }
 
 #draw-oracle:hover {
-  background: #ffed4e;
+  background: linear-gradient(135deg, #FFED4E 0%, #FFD700 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(184, 134, 11, 0.7);
 }
