@@ -1,10 +1,18 @@
 body {
-  background: url("./images/lenormand/background_0.png") center/cover no-repeat fixed;
+  background-image: url("images/lenormand/background_0.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  margin: 0;
+  min-height: 100vh;
   color: #eee;
   font-family: serif;
   text-align: center;
-  min-height: 100vh;
 }
+
+/* ===== 컨트롤 ===== */
 
 .controls {
   margin: 12px 0 20px;
@@ -12,29 +20,36 @@ body {
 
 button {
   padding: 8px 14px;
-  margin: 0 4px;
+  margin: 4px;
   cursor: pointer;
 }
 
-/* ===== Tableau ===== */
+/* ===== GT GRID ===== */
 
 #tableau {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(8, 1fr);
   gap: 0.6vw;
+
   width: 96vw;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
 }
 
+/* ⭐ 핵심: 카드 자체가 크기를 가짐 */
 .card {
   position: relative;
-  perspective: 900px;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  perspective: 1000px;
 }
 
+/* ===== 뒤집기 구조 ===== */
+
 .card-inner {
-  position: relative;
   width: 100%;
+  height: 100%;
+  position: relative;
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
 }
@@ -45,7 +60,7 @@ button {
 
 .card-face {
   position: absolute;
-  width: 100%;
+  inset: 0;
   backface-visibility: hidden;
 }
 
@@ -53,19 +68,20 @@ button {
   transform: rotateY(180deg);
 }
 
-.card img {
+.card-face img {
   width: 100%;
-  aspect-ratio: 2 / 3;
+  height: 100%;
   object-fit: contain;
 }
 
-/* 선택 / 체인 */
-.card.selected img {
+/* ===== 상태 ===== */
+
+.card.selected {
   outline: 3px solid gold;
   box-shadow: 0 0 12px gold;
 }
 
-.card.chain img {
+.card.chain {
   outline: 3px solid #4fd1c5;
   box-shadow: 0 0 12px #4fd1c5;
 }
@@ -74,12 +90,12 @@ button {
   opacity: 0.35;
 }
 
-/* 번호 */
+/* ===== 라벨 ===== */
+
 .card-label {
   position: absolute;
   top: 4px;
   left: 4px;
-  font-size: 11px;
   display: none;
   z-index: 5;
 }
@@ -88,16 +104,12 @@ button {
   background: rgba(0,0,0,0.7);
   padding: 2px 5px;
   border-radius: 4px;
+  font-size: 11px;
   margin-right: 3px;
 }
 
-.house-num {
-  position: absolute;
-  right: 4px;
-  top: 4px;
-}
+/* ===== 마지막 4장 ===== */
 
-/* 마지막 4장 */
 .final-card:nth-of-type(33) { grid-column: 3; grid-row: 5; }
 .final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
 .final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
