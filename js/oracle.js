@@ -2,6 +2,7 @@ const oracleBtn = document.getElementById("oracle-btn");
 const oracleModal = document.getElementById("oracle-modal");
 const oracleClose = document.getElementById("oracle-close");
 const drawButton = document.getElementById("draw-oracle");
+const saveOracleBtn = document.getElementById("save-oracle");
 const houseCard = document.getElementById("house-card");
 const spellCard = document.getElementById("spell-card");
 const houseImg = document.getElementById("house-img");
@@ -9,6 +10,7 @@ const houseName = document.getElementById("house-name");
 const spellImg = document.getElementById("spell-img");
 const spellName = document.getElementById("spell-name");
 const message = document.getElementById("oracle-message");
+const oracleContainer = document.getElementById("oracle-container");
 
 function drawRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -100,3 +102,17 @@ drawButton.addEventListener("click", async () => {
   await new Promise(r => setTimeout(r, 400));
   message.textContent = generateAdvice(house, spell);
 });
+
+saveOracleBtn.onclick = async () => {
+  try {
+    const html2canvas = await import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js");
+    const canvas = await html2canvas.default(oracleContainer);
+    const link = document.createElement("a");
+    link.download = `oracle_advice_${new Date().getTime()}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  } catch (error) {
+    console.error("오라클 저장 실패:", error);
+    alert("저장에 실패했습니다. 다시 시도해주세요.");
+  }
+};
