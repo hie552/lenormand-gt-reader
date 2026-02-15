@@ -1,59 +1,186 @@
-/* css/style.css에서 카드 관련 부분만 수정 */
+/* css/style.css - 리딩 가이드 관련 스타일 추가 */
 
-/* 카드 */
-.card {
-  position: relative;
+/* 기존 스타일은 유지하고 아래 내용 추가 */
+
+/* 리딩 모달 */
+.reading-modal-content {
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.reading-section {
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(184, 134, 11, 0.3);
+}
+
+.reading-section h4 {
+  color: #FFD700;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+#question-input {
   width: 100%;
-  aspect-ratio: 2 / 3;
-  perspective: 1000px;
+  padding: 12px;
+  font-size: 1em;
+  border: 2px solid #B8860B;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  font-family: 'Georgia', serif;
+  margin-bottom: 10px;
+}
+
+.guide-btn {
+  background: linear-gradient(135deg, #B8860B 0%, #8B6914 100%);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  font-size: 1em;
+  transition: all 0.3s;
+}
+
+.guide-btn:hover {
+  background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(184, 134, 11, 0.5);
+}
+
+.ai-btn {
+  background: linear-gradient(135deg, #9370DB 0%, #6A5ACD 100%);
+  font-size: 1.1em;
+  padding: 12px 24px;
+}
+
+.ai-btn:hover {
+  background: linear-gradient(135deg, #BA55D3 0%, #9370DB 100%);
+}
+
+.saved-text {
+  margin-top: 10px;
+  color: #FFD700;
+  font-style: italic;
+}
+
+.guide-text {
+  color: #ccc;
+  font-size: 0.95em;
+  margin: 10px 0;
+}
+
+.significator-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.significator-options label {
+  color: #e6e6e6;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.significator-options label:hover {
+  background: rgba(184, 134, 11, 0.2);
+}
+
+.significator-options input[type="radio"] {
+  margin-right: 8px;
   cursor: pointer;
 }
 
-/* 뒤집기 구조 */
-.card-inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.6s ease;
+.technique-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
 }
 
-.card.revealed .card-inner {
-  transform: rotateY(180deg);
+.technique-btn {
+  background: rgba(184, 134, 11, 0.2);
+  border: 2px solid #B8860B;
+  color: #FFD700;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Georgia', serif;
+  transition: all 0.3s;
+  text-align: left;
 }
 
-.card-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  /* background 제거 */
-  /* border-radius 제거 */
-  /* box-shadow 제거 */
+.technique-btn:hover {
+  background: rgba(184, 134, 11, 0.4);
+  transform: translateX(5px);
 }
 
-.card-front {
-  transform: rotateY(180deg);
+.technique-btn.active {
+  background: #B8860B;
+  color: white;
 }
 
-.card-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.ai-result {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(147, 112, 219, 0.1);
+  border: 2px solid #9370DB;
+  border-radius: 10px;
+  color: #e6e6e6;
+  line-height: 1.8;
+  min-height: 100px;
+  display: none;
+}
+
+.ai-result.show {
   display: block;
+  animation: fadeIn 0.5s;
 }
 
-/* 상태 */
-.card.selected {
-  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-  z-index: 10;
+.ai-result h5 {
+  color: #BA55D3;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
-.card.chain {
-  filter: drop-shadow(0 0 15px rgba(79, 209, 197, 0.8));
-  z-index: 10;
+.ai-result p {
+  margin: 8px 0;
 }
 
-.card.dimmed {
-  opacity: 0.4;
-  filter: grayscale(50%);
+.loading {
+  text-align: center;
+  color: #9370DB;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 스크롤바 스타일 */
+.reading-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reading-modal-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.reading-modal-content::-webkit-scrollbar-thumb {
+  background: #B8860B;
+  border-radius: 4px;
+}
+
+.reading-modal-content::-webkit-scrollbar-thumb:hover {
+  background: #FFD700;
 }
