@@ -1,93 +1,87 @@
 body {
-  background: #111;
+  background: url("../images/lenormand/background_0.png") center/cover no-repeat fixed;
   color: #eee;
   font-family: serif;
   text-align: center;
+  min-height: 100vh;
 }
 
-/* 전체 그랑타블로 */
-#tableau {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 10px;
-  max-width: 1200px;
-  margin: 40px auto;
+.controls {
+  margin: 10px 0 20px;
 }
 
-/* 카드 기본 */
-.card img {
-  width: 100%;
-  display: block;
-  border: 1px solid #444;
-}
-
-/* 마지막 4장 위치 조정 */
-.final-card:nth-of-type(33) { grid-column: 3; grid-row: 5; }
-.final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
-.final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
-.final-card:nth-of-type(36) { grid-column: 6; grid-row: 5; }
-
-#oracle-area {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin: 20px 0;
-}
-
-.oracle-card img {
-  width: 140px;
-  border: 1px solid #555;
-}
-
-#draw-oracle {
-  padding: 10px 20px;
-  font-size: 16px;
+button {
+  padding: 8px 14px;
+  margin: 0 4px;
   cursor: pointer;
 }
 
-#oracle-message {
-  margin-top: 20px;
-  font-size: 18px;
+/* ===== Tableau ===== */
+
+#tableau {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.6vw;
+  width: 96vw;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .card {
   position: relative;
-  cursor: pointer;
+  perspective: 800px;
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  transform: rotateY(180deg);
+}
+
+.card.revealed img {
+  transform: rotateY(0deg);
 }
 
 .card.selected img {
   outline: 3px solid gold;
-  box-shadow: 0 0 15px gold;
+  box-shadow: 0 0 12px gold;
 }
 
-/* 번호 라벨 */
-.card-label {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  font-size: 12px;
-  display: none;
-}
-
-.card-label span {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 2px 6px;
-  margin-right: 4px;
-  border-radius: 4px;
-}
-
-/* 하우스 번호 오른쪽 */
-.house-num {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-}
-
-.card.chain {
+.card.chain img {
   outline: 3px solid #4fd1c5;
-  box-shadow: 0 0 15px #4fd1c5;
+  box-shadow: 0 0 12px #4fd1c5;
 }
 
 .card.dimmed {
   opacity: 0.35;
 }
+
+/* 번호 */
+.card-label {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 11px;
+  display: none;
+}
+
+.card-label span {
+  background: rgba(0,0,0,0.7);
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 3px;
+}
+
+.house-num {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+
+/* 마지막 4장 */
+.final-card:nth-of-type(33) { grid-column: 3; grid-row: 5; }
+.final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
+.final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
+.final-card:nth-of-type(36) { grid-column: 6; grid-row: 5; }
