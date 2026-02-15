@@ -1,6 +1,42 @@
 const lenormandCards = [
-  { id: 1, name: "Rider", image: "images/lenormand/01_rider.png" },
-  { id: 2, name: "Clover", image: "images/lenormand/02_clover.png" },
-  { id: 3, name: "Ship", image: "images/lenormand/03_ship.png" },
-  { id: 4, name: "House", image: "images/lenormand/04_house.png" }
+  { id: 1, image: "images/lenormand/01_rider.png" },
+  { id: 2, image: "images/lenormand/02_clover.png" },
+  { id: 3, image: "images/lenormand/03_ship.png" },
+  { id: 4, image: "images/lenormand/04_house.png" },
+  { id: 5, image: "images/lenormand/05_tree.png" },
+  { id: 6, image: "images/lenormand/06_cloud.png" },
+  { id: 7, image: "images/lenormand/07_snake.png" },
+  { id: 8, image: "images/lenormand/08_coffin.png" },
+
+  { id: 9, image: "images/lenormand/09_bouquet.png" },
+  { id: 10, image: "images/lenormand/10_scythe.png" },
+  { id: 11, image: "images/lenormand/11_broom.png" },
+  { id: 12, image: "images/lenormand/12_owls.png" },
+  { id: 13, image: "images/lenormand/13_child.png" },
+  { id: 14, image: "images/lenormand/14_fox.png" },
+  { id: 15, image: "images/lenormand/15_bear.png" },
+  { id: 16, image: "images/lenormand/16_star.png" },
+
+  { id: 17, image: "images/lenormand/17_stork.png" },
+  { id: 18, image: "images/lenormand/18_dog.png" },
+  { id: 19, image: "images/lenormand/19_tower.png" },
+  { id: 20, image: "images/lenormand/20_garden.png" },
+  { id: 21, image: "images/lenormand/21_mountain.png" },
+  { id: 22, image: "images/lenormand/22_crossroad.png" },
+  { id: 23, image: "images/lenormand/23_mice.png" },
+  { id: 24, image: "images/lenormand/24_heart.png" },
+
+  { id: 25, image: "images/lenormand/25_ring.png" },
+  { id: 26, image: "images/lenormand/26_book.png" },
+  { id: 27, image: "images/lenormand/27_letter.png" },
+  { id: 28, image: "images/lenormand/28_man.png" },
+  { id: 29, image: "images/lenormand/29_woman.png" },
+  { id: 30, image: "images/lenormand/30_lily.png" },
+  { id: 31, image: "images/lenormand/31_sun.png" },
+  { id: 32, image: "images/lenormand/32_moon.png" },
+
+  { id: 33, image: "images/lenormand/33_key.png" },
+  { id: 34, image: "images/lenormand/34_fish.png" },
+  { id: 35, image: "images/lenormand/35_anchor.png" },
+  { id: 36, image: "images/lenormand/36_cross.png" }
 ];
