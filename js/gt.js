@@ -1,130 +1,217 @@
-/* css/style.css */
+// js/gt.js
 
-body {
-  background-image: url("../images/lenormand/background_0.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+const tableau = document.getElementById("tableau");
+const revealBtn = document.getElementById("reveal-cards");
+const shuffleBtn = document.getElementById("shuffle-toggle");
+const toggleBtn = document.getElementById("toggle-labels");
+const chainBtn = document.getElementById("chain-mode");
+const saveBtn = document.getElementById("save-reading");
 
-  margin: 0;
-  min-height: 100vh;
-  color: #eee;
-  font-family: serif;
-  text-align: center;
+const BACK = "images/lenormand/back.png";
+
+let shuffled = false;
+let labelMode = 'none';
+let chainMode = false;
+
+let currentDeck = [...lenormandCards];
+const cardElements = [];
+
+const houseNames = {
+  1: "Rider", 2: "Clover", 3: "Ship", 4: "House", 5: "Tree", 6: "Cloud",
+  7: "Snake", 8: "Coffin", 9: "Bouquet", 10: "Scythe", 11: "Broom", 12: "Owls",
+  13: "Child", 14: "Fox", 15: "Bear", 16: "Star", 17: "Stork", 18: "Dog",
+  19: "Tower", 20: "Garden", 21: "Mountain", 22: "Crossroad", 23: "Mice", 24: "Heart",
+  25: "Ring", 26: "Book", 27: "Letter", 28: "Man", 29: "Woman", 30: "Lily",
+  31: "Sun", 32: "Moon", 33: "Key", 34: "Fish", 35: "Anchor", 36: "Cross"
+};
+
+function shuffle(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
-/* ===== 컨트롤 ===== */
+function renderCards() {
+  tableau.innerHTML = "";
+  cardElements.length = 0;
 
-.controls {
-  margin: 12px 0 20px;
+  currentDeck.forEach((card, index) => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card";
+    cardDiv.dataset.house = index + 1;
+    cardDiv.dataset.cardId = card.id;
+    
+    if (index >= 32) {
+      cardDiv.classList.add("final-card");
+    }
+
+    const inner = document.createElement("div");
+    inner.className = "card-inner";
+
+    const back = document.createElement("div");
+    back.className = "card-face card-back";
+    back.innerHTML = `<img src="${BACK}" alt="Card back">`;
+
+    const front = document.createElement("div");
+    front.className = "card-face card-front";
+    front.innerHTML = `<img src="${card.image}" alt="Card ${card.id}">`;
+
+    const label = document.createElement("div");
+    label.className = "card-label";
+    label.innerHTML = `
+      <span class="card-number">${card.id}</span>
+      <span class="house-num">${index + 1}</span>
+      <span class="house-name">${houseNames[index + 1]}</span>
+    `;
+
+    inner.append(back, front);
+    cardDiv.append(inner, label);
+    tableau.appendChild(cardDiv);
+
+    cardDiv.addEventListener("click", () => {
+      if (!cardDiv.classList.contains("revealed")) return;
+      
+      cardDiv.classList.toggle("selected");
+      
+      if (chainMode) {
+        applyChain();
+      }
+    });
+
+    cardElements.push({ cardDiv, house: index + 1, cardId: card.id });
+  });
+  
+  updateLabelDisplay();
 }
 
-button {
-  padding: 8px 14px;
-  margin: 4px;
-  cursor: pointer;
+function updateLabelDisplay() {
+  document.querySelectorAll(".card-label").forEach(label => {
+    const cardNum = label.querySelector(".card-number");
+    const houseNum = label.querySelector(".house-num");
+    const houseName = label.querySelector(".house-name");
+    
+    if (labelMode === 'none') {
+      label.style.display = "none";
+    } else {
+      label.style.display = "block";
+      
+      if (labelMode === 'number') {
+        cardNum.style.display = "inline-block";
+        houseNum.style.display = "inline-block";
+        houseName.style.display = "none";
+      } else if (labelMode === 'house') {
+        cardNum.style.display = "none";
+        houseNum.style.display = "none";
+        houseName.style.display = "inline-block";
+      }
+    }
+  });
 }
 
-/* ===== GT GRID ===== */
+renderCards();
 
-#tableau {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0.6vw;
+shuffleBtn.onclick = () => {
+  shuffled = !shuffled;
+  shuffleBtn.textContent = shuffled ? "셔플 ON" : "셔플 OFF";
+  
+  if (shuffled) {
+    currentDeck = shuffle(lenormandCards);
+  } else {
+    currentDeck = [...lenormandCards];
+  }
+  
+  renderCards();
+};
 
-  width: 96vw;
-  max-width: 1200px;
-  margin: 0 auto 40px;
+revealBtn.onclick = async () => {
+  const order = [...cardElements].sort((a, b) => {
+    const ar = Math.ceil(a.house / 8), ac = (a.house - 1) % 8;
+    const br = Math.ceil(b.house / 8), bc = (b.house - 1) % 8;
+    return (ar + ac) - (br + bc);
+  });
+
+  for (const c of order) {
+    c.cardDiv.classList.add("revealed");
+    await new Promise(r => setTimeout(r, 40));
+  }
+};
+
+toggleBtn.onclick = () => {
+  if (labelMode === 'none') {
+    labelMode = 'number';
+    toggleBtn.textContent = "번호 표시";
+  } else if (labelMode === 'number') {
+    labelMode = 'house';
+    toggleBtn.textContent = "하우스 표시";
+  } else {
+    labelMode = 'none';
+    toggleBtn.textContent = "번호 / 하우스";
+  }
+  
+  updateLabelDisplay();
+};
+
+chainBtn.onclick = () => {
+  chainMode = !chainMode;
+  chainBtn.textContent = chainMode ? "체인 종료" : "체인 리딩";
+  
+  if (chainMode) {
+    applyChain();
+  } else {
+    clearChain();
+  }
+};
+
+function applyChain() {
+  clearChain();
+  const selected = document.querySelectorAll(".card.selected");
+  
+  if (selected.length === 0) return;
+
+  const chainCards = new Set();
+  
+  selected.forEach(base => {
+    const h = Number(base.dataset.house);
+    const br = Math.ceil(h / 8), bc = (h - 1) % 8;
+
+    document.querySelectorAll(".card").forEach(c => {
+      const ch = Number(c.dataset.house);
+      const r = Math.ceil(ch / 8), col = (ch - 1) % 8;
+      
+      if (r === br || col === bc || Math.abs(r - br) === Math.abs(col - bc)) {
+        chainCards.add(c);
+      }
+    });
+  });
+
+  document.querySelectorAll(".card").forEach(c => {
+    if (chainCards.has(c)) {
+      c.classList.add("chain");
+    } else {
+      c.classList.add("dimmed");
+    }
+  });
 }
 
-/* ⭐ 핵심: 카드 자체가 크기를 가짐 */
-.card {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  perspective: 1000px;
+function clearChain() {
+  document.querySelectorAll(".card").forEach(c =>
+    c.classList.remove("chain", "dimmed")
+  );
 }
 
-/* ===== 뒤집기 구조 ===== */
-
-.card-inner {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease;
-}
-
-.card.revealed .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-}
-
-.card-front {
-  transform: rotateY(180deg);
-}
-
-.card-face img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* ===== 상태 ===== */
-
-.card.selected {
-  outline: 3px solid gold;
-  box-shadow: 0 0 12px gold;
-}
-
-.card.chain {
-  outline: 3px solid #4fd1c5;
-  box-shadow: 0 0 12px #4fd1c5;
-}
-
-.card.dimmed {
-  opacity: 0.35;
-}
-
-/* ===== 라벨 ===== */
-
-.card-label {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  display: none;
-  z-index: 5;
-}
-
-.card-label span {
-  background: rgba(0,0,0,0.7);
-  padding: 2px 5px;
-  border-radius: 4px;
-  font-size: 11px;
-  margin-right: 3px;
-}
-
-/* ===== 마지막 4장 (33-36번 카드를 27-30번 아래 배치) ===== */
-
-.final-card:nth-of-type(33) { 
-  grid-column: 3; 
-  grid-row: 5; 
-}
-.final-card:nth-of-type(34) { 
-  grid-column: 4; 
-  grid-row: 5; 
-}
-.final-card:nth-of-type(35) { 
-  grid-column: 5; 
-  grid-row: 5; 
-}
-.final-card:nth-of-type(36) { 
-  grid-column: 6; 
-  grid-row: 5; 
-}
+saveBtn.onclick = async () => {
+  try {
+    const html2canvas = await import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js");
+    const canvas = await html2canvas.default(tableau);
+    const link = document.createElement("a");
+    link.download = `lenormand_reading_${new Date().getTime()}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  } catch (error) {
+    console.error("스크린샷 저장 실패:", error);
+    alert("저장에 실패했습니다. 다시 시도해주세요.");
+  }
+};
