@@ -1,5 +1,3 @@
-// js/cardMeanings.js - 카드 의미 데이터
-
 const cardMeanings = {
   1: { name: "Rider", keywords: "뉴스, 메시지, 방문자, 빠른 움직임, 시작", positive: true },
   2: { name: "Clover", keywords: "행운, 기회, 짧은 행복, 가벼움", positive: true },
