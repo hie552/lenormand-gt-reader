@@ -106,7 +106,57 @@ drawButton.addEventListener("click", async () => {
 saveOracleBtn.onclick = async () => {
   try {
     const html2canvas = await import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js");
-    const canvas = await html2canvas.default(oracleContainer);
+    
+    // 오라클 컨테이너를 감싸는 캡처용 컨테이너 생성
+    const captureContainer = document.createElement('div');
+    captureContainer.style.cssText = `
+      position: relative;
+      background-image: url('images/lenormand/background_0.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 40px 30px;
+      display: inline-block;
+      min-width: 500px;
+    `;
+    
+    // 배경 오버레이 추가
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.3);
+      pointer-events: none;
+    `;
+    
+    // 오라클 컨테이너 복제
+    const oracleClone = oracleContainer.cloneNode(true);
+    oracleClone.style.position = 'relative';
+    oracleClone.style.zIndex = '1';
+    
+    captureContainer.appendChild(overlay);
+    captureContainer.appendChild(oracleClone);
+    
+    // body에 임시로 추가 (화면 밖에)
+    captureContainer.style.position = 'absolute';
+    captureContainer.style.left = '-9999px';
+    document.body.appendChild(captureContainer);
+    
+    // 스크린샷 캡처
+    const canvas = await html2canvas.default(captureContainer, {
+      backgroundColor: null,
+      scale: 2,
+      logging: false,
+      useCORS: true
+    });
+    
+    // 임시 컨테이너 제거
+    document.body.removeChild(captureContainer);
+    
+    // 다운로드
     const link = document.createElement("a");
     link.download = `oracle_advice_${new Date().getTime()}.png`;
     link.href = canvas.toDataURL();
