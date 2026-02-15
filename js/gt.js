@@ -1,5 +1,3 @@
-// js/gt.js
-
 const tableau = document.getElementById("tableau");
 const revealBtn = document.getElementById("reveal-cards");
 const shuffleBtn = document.getElementById("shuffle-toggle");
