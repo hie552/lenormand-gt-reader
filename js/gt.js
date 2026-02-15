@@ -31,3 +31,13 @@ lenormandCards.forEach((card, index) => {
 
   tableau.appendChild(cardDiv);
 });
+
+const toggleBtn = document.getElementById("toggle-labels");
+let labelsVisible = false;
+
+toggleBtn.addEventListener("click", () => {
+  labelsVisible = !labelsVisible;
+  document.querySelectorAll(".card-label").forEach(label => {
+    label.style.display = labelsVisible ? "block" : "none";
+  });
+});
