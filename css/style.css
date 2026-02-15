@@ -594,16 +594,17 @@ button:active {
 
   #tableau {
     gap: 1vw;
-    padding-top: 30px;
+    padding-top: 40px;
   }
 
   .card-label {
-    top: -28px;
+    top: -35px;
   }
 
   .card-label span {
-    font-size: 9px;
-    padding: 2px 6px;
+    font-size: 7px;
+    padding: 2px 5px;
+    letter-spacing: 0.2px;
   }
 
   .modal-content {
@@ -673,16 +674,18 @@ button:active {
   }
 
   #tableau {
-    padding-top: 25px;
+    padding-top: 45px;
   }
 
   .card-label {
-    top: -25px;
+    top: -38px;
   }
 
   .card-label span {
-    font-size: 8px;
-    padding: 2px 5px;
+    font-size: 6px;
+    padding: 1px 4px;
+    letter-spacing: 0.1px;
+    margin-right: 2px;
   }
 
   .oracle-card-inner {
