@@ -1,5 +1,7 @@
+/* css/style.css */
+
 body {
-  background-image: url("images/lenormand/background_0.png");
+  background-image: url("../images/lenormand/background_0.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -108,9 +110,21 @@ button {
   margin-right: 3px;
 }
 
-/* ===== 마지막 4장 ===== */
+/* ===== 마지막 4장 (33-36번 카드를 27-30번 아래 배치) ===== */
 
-.final-card:nth-of-type(33) { grid-column: 3; grid-row: 5; }
-.final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
-.final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
-.final-card:nth-of-type(36) { grid-column: 6; grid-row: 5; }
+.final-card:nth-of-type(33) { 
+  grid-column: 3; 
+  grid-row: 5; 
+}
+.final-card:nth-of-type(34) { 
+  grid-column: 4; 
+  grid-row: 5; 
+}
+.final-card:nth-of-type(35) { 
+  grid-column: 5; 
+  grid-row: 5; 
+}
+.final-card:nth-of-type(36) { 
+  grid-column: 6; 
+  grid-row: 5; 
+}
