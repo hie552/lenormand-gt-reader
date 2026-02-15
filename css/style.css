@@ -2,9 +2,8 @@
 
 body {
   background-image: url("../images/lenormand/background_0.png");
-  background-size: 200px 200px; /* 작게 만들기 */
-  background-position: center;
-  background-repeat: repeat; /* 바둑판식 반복 */
+  background-size: 400px;
+  background-repeat: repeat;
   background-attachment: fixed;
 
   margin: 0;
@@ -15,7 +14,7 @@ body {
   position: relative;
 }
 
-/* 배경 오버레이 (더 밝게) */
+/* 배경 오버레이 (밝게) */
 body::before {
   content: "";
   position: fixed;
