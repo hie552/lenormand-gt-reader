@@ -19,24 +19,84 @@
   <button id="shuffle-toggle">셔플 OFF</button>
   <button id="toggle-labels">번호 / 하우스</button>
   <button id="chain-mode">체인 리딩</button>
+  <button id="reading-guide">리딩 가이드</button>
   <button id="save-reading">리딩 저장</button>
   <button id="oracle-btn">오라클 조언</button>
 </div>
 
 <div id="tableau"></div>
 
+<!-- 리딩 가이드 모달 -->
+<div id="reading-modal" class="modal">
+  <div class="modal-content reading-modal-content">
+    <span class="close" id="reading-close">&times;</span>
+    <h3>📖 그랑타블로 리딩 가이드</h3>
+    
+    <div class="reading-section">
+      <h4>1. 질문 설정</h4>
+      <input type="text" id="question-input" placeholder="질문을 입력하세요 (예: 올해 나의 커리어는 어떻게 될까?)">
+      <button id="save-question" class="guide-btn">질문 저장</button>
+      <p id="saved-question" class="saved-text"></p>
+    </div>
+
+    <div class="reading-section">
+      <h4>2. 시그니피케이터 선택</h4>
+      <div class="significator-options">
+        <label><input type="radio" name="significator" value="28"> 28. Man (남성)</label>
+        <label><input type="radio" name="significator" value="29"> 29. Woman (여성)</label>
+        <label><input type="radio" name="significator" value="custom"> 직접 선택</label>
+      </div>
+      <p class="guide-text">질문자를 나타내는 카드를 선택하세요. 카드를 클릭하면 선택됩니다.</p>
+      <button id="find-significator" class="guide-btn">시그니피케이터 찾기</button>
+      <p id="significator-position" class="saved-text"></p>
+    </div>
+
+    <div class="reading-section">
+      <h4>3. 리딩 기법</h4>
+      <div class="technique-list">
+        <button class="technique-btn" data-technique="first-line">1·2·3 하우스 (첫 줄 요약)</button>
+        <button class="technique-btn" data-technique="chain">체인 기법</button>
+        <button class="technique-btn" data-technique="portrait">초상화 기법</button>
+        <button class="technique-btn" data-technique="cross">십자가 / 대각선 / 주변</button>
+        <button class="technique-btn" data-technique="house">하우스 해석</button>
+        <button class="technique-btn" data-technique="overall">전체 분위기 & 결론</button>
+      </div>
+    </div>
+
+    <div class="reading-section">
+      <h4>4. AI 자동 해석</h4>
+      <button id="ai-interpret" class="guide-btn ai-btn">🔮 AI로 리딩 해석하기</button>
+      <div id="ai-result" class="ai-result"></div>
+    </div>
+  </div>
+</div>
+
 <!-- 오라클 모달 -->
 <div id="oracle-modal" class="modal">
   <div class="modal-content">
-    <span class="close">&times;</span>
+    <span class="close" id="oracle-close">&times;</span>
     <h3>오늘의 마법 조언</h3>
     <div class="oracle-cards">
-      <div class="oracle-card">
-        <img id="house-img" src="" alt="House">
+      <div class="oracle-card" id="house-card">
+        <div class="oracle-card-inner">
+          <div class="oracle-card-face oracle-card-back">
+            <img src="images/lenormand/back.png" alt="Card back">
+          </div>
+          <div class="oracle-card-face oracle-card-front">
+            <img id="house-img" src="" alt="House">
+          </div>
+        </div>
         <p id="house-name"></p>
       </div>
-      <div class="oracle-card">
-        <img id="spell-img" src="" alt="Spell">
+      <div class="oracle-card" id="spell-card">
+        <div class="oracle-card-inner">
+          <div class="oracle-card-face oracle-card-back">
+            <img src="images/lenormand/back.png" alt="Card back">
+          </div>
+          <div class="oracle-card-face oracle-card-front">
+            <img id="spell-img" src="" alt="Spell">
+          </div>
+        </div>
         <p id="spell-name"></p>
       </div>
     </div>
@@ -47,8 +107,10 @@
 
 <script src="js/data.js"></script>
 <script src="js/oracleData.js"></script>
+<script src="js/cardMeanings.js"></script>
 <script src="js/gt.js"></script>
 <script src="js/oracle.js"></script>
+<script src="js/reading.js"></script>
 
 </body>
 </html>
