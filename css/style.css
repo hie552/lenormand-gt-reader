@@ -26,3 +26,26 @@ body {
 .final-card:nth-of-type(34) { grid-column: 4; grid-row: 5; }
 .final-card:nth-of-type(35) { grid-column: 5; grid-row: 5; }
 .final-card:nth-of-type(36) { grid-column: 6; grid-row: 5; }
+
+#oracle-area {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px 0;
+}
+
+.oracle-card img {
+  width: 140px;
+  border: 1px solid #555;
+}
+
+#draw-oracle {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#oracle-message {
+  margin-top: 20px;
+  font-size: 18px;
+}
