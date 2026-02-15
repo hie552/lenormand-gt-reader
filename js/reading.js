@@ -1,5 +1,3 @@
-// js/reading.js - 리딩 가이드 기능
-
 const readingBtn = document.getElementById("reading-guide");
 const readingModal = document.getElementById("reading-modal");
 const readingClose = document.getElementById("reading-close");
@@ -15,7 +13,6 @@ let currentQuestion = "";
 let currentSignificator = null;
 let currentTechnique = null;
 
-// 모달 열기/닫기
 readingBtn.onclick = () => {
   readingModal.style.display = "block";
 };
@@ -24,13 +21,6 @@ readingClose.onclick = () => {
   readingModal.style.display = "none";
 };
 
-window.onclick = (event) => {
-  if (event.target == readingModal) {
-    readingModal.style.display = "none";
-  }
-};
-
-// 질문 저장
 saveQuestionBtn.onclick = () => {
   currentQuestion = questionInput.value.trim();
   if (currentQuestion) {
@@ -40,7 +30,6 @@ saveQuestionBtn.onclick = () => {
   }
 };
 
-// 시그니피케이터 찾기
 findSigBtn.onclick = () => {
   const selected = document.querySelector('input[name="significator"]:checked');
   
@@ -51,7 +40,7 @@ findSigBtn.onclick = () => {
   
   if (selected.value === "custom") {
     sigPosition.textContent = "타블로에서 카드를 클릭하여 선택하세요.";
-    // 커스텀 선택 모드 활성화
+    readingModal.style.display = "none";
     enableCustomSignificatorMode();
   } else {
     const sigId = parseInt(selected.value);
@@ -69,7 +58,6 @@ function findSignificatorInTableau(cardId) {
       name: cardMeanings[cardId].name
     };
     
-    // 하이라이트
     document.querySelectorAll(".card").forEach(c => c.classList.remove("significator"));
     cardEl.cardDiv.classList.add("significator");
     
@@ -80,38 +68,29 @@ function findSignificatorInTableau(cardId) {
 }
 
 function enableCustomSignificatorMode() {
-  alert("타블로에서 원하는 카드를 클릭해주세요.");
-  
-  // 일시적으로 카드 클릭 이벤트 변경
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.cursor = "pointer";
-    card.addEventListener("click", customSignificatorHandler, { once: true });
-  });
-}
-
-function customSignificatorHandler(e) {
-  const cardDiv = e.currentTarget;
-  const cardId = parseInt(cardDiv.dataset.cardId);
-  const house = parseInt(cardDiv.dataset.house);
-  
-  currentSignificator = {
-    cardId: cardId,
-    house: house,
-    name: cardMeanings[cardId].name
+  const oneTimeHandler = (e) => {
+    const cardDiv = e.currentTarget;
+    const cardId = parseInt(cardDiv.dataset.cardId);
+    const house = parseInt(cardDiv.dataset.house);
+    
+    currentSignificator = {
+      cardId: cardId,
+      house: house,
+      name: cardMeanings[cardId].name
+    };
+    
+    document.querySelectorAll(".card").forEach(c => c.classList.remove("significator"));
+    cardDiv.classList.add("significator");
+    
+    readingModal.style.display = "block";
+    sigPosition.textContent = `${currentSignificator.name}이(가) ${house}번 하우스에 있습니다.`;
   };
   
-  document.querySelectorAll(".card").forEach(c => c.classList.remove("significator"));
-  cardDiv.classList.add("significator");
-  
-  sigPosition.textContent = `${currentSignificator.name}이(가) ${house}번 하우스에 있습니다.`;
-  
-  // 커서 복원
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.cursor = "pointer";
+  document.querySelectorAll(".card.revealed").forEach(card => {
+    card.addEventListener("click", oneTimeHandler, { once: true });
   });
 }
 
-// 리딩 기법 선택
 document.querySelectorAll(".technique-btn").forEach(btn => {
   btn.addEventListener("click", function() {
     document.querySelectorAll(".technique-btn").forEach(b => b.classList.remove("active"));
@@ -120,7 +99,6 @@ document.querySelectorAll(".technique-btn").forEach(btn => {
   });
 });
 
-// AI 해석
 aiInterpretBtn.onclick = async () => {
   if (!currentQuestion) {
     alert("먼저 질문을 저장해주세요.");
@@ -145,10 +123,8 @@ aiInterpretBtn.onclick = async () => {
 };
 
 async function generateAIInterpretation() {
-  // 현재 타블로 상태 수집
   const tableauState = collectTableauState();
   
-  // Claude API 호출
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -178,7 +154,6 @@ function collectTableauState() {
     allCards: []
   };
   
-  // 첫 줄 (1-8번 하우스)
   for (let i = 0; i < 8; i++) {
     const el = cardElements[i];
     state.firstLine.push({
@@ -187,7 +162,6 @@ function collectTableauState() {
     });
   }
   
-  // 전체 카드
   cardElements.forEach(el => {
     state.allCards.push({
       house: el.house,
@@ -200,42 +174,50 @@ function collectTableauState() {
 }
 
 function generatePrompt(state) {
-  let prompt = `당신은 레노먼드 카드 전문가입니다. 다음 그랑타블로 리딩을 해석해주세요.
+  const sigCard = cardElements.find(el => el.house === state.significator.house);
+  const sigRow = Math.ceil(state.significator.house / 8);
+  const sigCol = ((state.significator.house - 1) % 8) + 1;
+  
+  const surroundingCards = cardElements.filter(el => {
+    const row = Math.ceil(el.house / 8);
+    const col = ((el.house - 1) % 8) + 1;
+    return Math.abs(row - sigRow) <= 1 && Math.abs(col - sigCol) <= 1 && el.house !== state.significator.house;
+  }).map(el => `${cardMeanings[el.cardId].name} (${el.house}번)`).join(', ');
+
+  return `당신은 레노먼드 카드 전문가입니다. 다음 그랑타블로 리딩을 해석해주세요.
 
 질문: ${state.question}
 
-시그니피케이터: ${state.significator.name} (${state.significator.house}번 하우스)
+시그니피케이터: ${state.significator.name} (${state.significator.house}번 하우스 - ${sigRow}행 ${sigCol}열)
 
 첫 줄 카드 (1-8번 하우스):
 ${state.firstLine.map((c, i) => `${i + 1}. ${c.card.name} - ${c.card.keywords}`).join('\n')}
 
+시그니피케이터 주변 카드: ${surroundingCards}
+
 다음 형식으로 해석해주세요:
 
-1. **첫 줄 요약 (1·2·3 하우스)**
-   - 전체적인 상황의 흐름을 요약
+**1. 첫 줄 요약 (1·2·3 하우스 중심)**
+전체적인 상황의 흐름을 간단히 요약해주세요.
 
-2. **시그니피케이터 위치 분석**
-   - ${state.significator.name}의 위치가 의미하는 것
+**2. 시그니피케이터 위치 분석**
+${state.significator.name}이 ${state.significator.house}번 하우스(${sigRow}행 ${sigCol}열)에 위치한 것이 의미하는 바를 설명해주세요.
 
-3. **주변 카드 해석**
-   - 시그니피케이터 주변의 카드들이 말하는 것
+**3. 주변 카드 해석**
+시그니피케이터 주변의 카드들이 말하는 것을 해석해주세요.
 
-4. **결론 및 조언**
-   - 질문에 대한 명확한 답변과 조언
+**4. 결론 및 조언**
+질문에 대한 명확한 답변과 실천 가능한 조언을 제시해주세요.
 
-각 섹션을 명확하고 이해하기 쉽게 작성해주세요.`;
-
-  return prompt;
+각 섹션을 명확하고 이해하기 쉽게 작성해주세요. 한국어로 답변해주세요.`;
 }
 
 function displayInterpretation(text) {
-  // 텍스트를 파싱하여 보기 좋게 표시
   const sections = text.split(/\n\n+/);
   let html = '';
   
   sections.forEach(section => {
     if (section.includes('**')) {
-      // 제목 처리
       section = section.replace(/\*\*(.*?)\*\*/g, '<h5>$1</h5>');
     }
     html += `<p>${section}</p>`;
