@@ -10,6 +10,8 @@ const BACK = "images/lenormand/back.png";
 let shuffled = false;
 let labelMode = 'none';
 let chainMode = false;
+let lastClickTime = 0;
+let lastClickedCard = null;
 
 let currentDeck = [...lenormandCards];
 const cardElements = [];
@@ -22,6 +24,11 @@ const houseNames = {
   25: "Ring", 26: "Book", 27: "Letter", 28: "Man", 29: "Woman", 30: "Lily",
   31: "Sun", 32: "Moon", 33: "Key", 34: "Fish", 35: "Anchor", 36: "Cross"
 };
+
+// 모바일 감지
+function isMobile() {
+  return window.innerWidth <= 768;
+}
 
 function shuffle(array) {
   const arr = [...array];
@@ -112,13 +119,30 @@ function renderCards() {
     cardDiv.append(inner, label);
     tableau.appendChild(cardDiv);
 
-    cardDiv.addEventListener("click", () => {
+    cardDiv.addEventListener("click", (event) => {
       if (!cardDiv.classList.contains("revealed")) return;
       
-      // Shift 키를 누른 채 클릭하면 카드 설명 표시
-      if (event.shiftKey) {
-        showCardDetail(card.id);
-        return;
+      const currentTime = Date.now();
+      const timeDiff = currentTime - lastClickTime;
+      
+      // 모바일: 더블클릭으로 설명 표시
+      // PC: Shift + 클릭으로 설명 표시
+      if (isMobile()) {
+        if (lastClickedCard === cardDiv && timeDiff < 300) {
+          // 더블클릭
+          showCardDetail(card.id);
+          lastClickedCard = null;
+          lastClickTime = 0;
+          return;
+        } else {
+          lastClickedCard = cardDiv;
+          lastClickTime = currentTime;
+        }
+      } else {
+        if (event.shiftKey) {
+          showCardDetail(card.id);
+          return;
+        }
       }
       
       cardDiv.classList.toggle("selected");
