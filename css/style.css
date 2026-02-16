@@ -702,3 +702,97 @@ button:active {
     margin-top: 8px;
   }
 }
+
+/* ===== 카드 상세 모달 ===== */
+
+.card-detail-modal .modal-content {
+  max-width: 900px;
+  width: 90%;
+}
+
+.card-detail-content h3 {
+  color: #FFD700;
+  font-size: 2.2em;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.card-detail-body {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.card-detail-image {
+  flex-shrink: 0;
+}
+
+.card-detail-image img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.card-detail-info {
+  flex: 1;
+  color: #e6e6e6;
+  text-align: left;
+}
+
+.card-keywords {
+  font-size: 1.05em;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: rgba(184, 134, 11, 0.2);
+  border-radius: 6px;
+  border-left: 4px solid #FFD700;
+}
+
+.card-description {
+  font-size: 1.1em;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+}
+
+.card-character {
+  background: rgba(147, 112, 219, 0.15);
+  border: 2px solid #9370DB;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.character-name {
+  font-size: 1.2em;
+  color: #BA55D3;
+  margin-bottom: 10px;
+}
+
+.character-quote {
+  font-style: italic;
+  color: #FFD700;
+  margin-bottom: 12px;
+  font-size: 1.05em;
+}
+
+.character-detail {
+  line-height: 1.6;
+  color: #d0d0d0;
+}
+
+@media screen and (max-width: 768px) {
+  .card-detail-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card-detail-image img {
+    width: 200px;
+  }
+  
+  .card-detail-content h3 {
+    font-size: 1.8em;
+  }
+}
