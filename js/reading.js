@@ -12,6 +12,7 @@ const aiResult = document.getElementById("ai-result");
 let currentQuestion = "";
 let currentSignificator = null;
 let currentTechnique = null;
+let isReadingMode = false;
 
 readingBtn.onclick = () => {
   readingModal.style.display = "block";
@@ -19,6 +20,10 @@ readingBtn.onclick = () => {
 
 readingClose.onclick = () => {
   readingModal.style.display = "none";
+  // 모달 닫을 때 리딩 모드 해제
+  if (isReadingMode) {
+    exitReadingMode();
+  }
 };
 
 saveQuestionBtn.onclick = () => {
@@ -111,8 +116,99 @@ document.querySelectorAll(".technique-btn").forEach(btn => {
     
     // 설명 표시
     showTechniqueGuide(technique);
+    
+    // 리딩 모드 활성화 (라벨 자동 표시)
+    enterReadingMode();
+    
+    // 모달 닫기
+    readingModal.style.display = "none";
   });
 });
+
+function enterReadingMode() {
+  isReadingMode = true;
+  
+  // 라벨 자동 표시 (하우스 모드)
+  if (labelMode === 'none') {
+    // 이전 라벨 모드 저장
+    window.previousLabelMode = labelMode;
+    
+    // 하우스 이름 표시로 전환
+    labelMode = 'house';
+    toggleBtn.textContent = "하우스 표시";
+    updateLabelDisplay();
+  }
+  
+  // 안내 메시지 표시
+  showReadingModeNotification();
+}
+
+function exitReadingMode() {
+  isReadingMode = false;
+  
+  // 하이라이트 제거
+  clearAllHighlights();
+  
+  // 기법 버튼 비활성화
+  document.querySelectorAll(".technique-btn").forEach(b => b.classList.remove("active"));
+  currentTechnique = null;
+  
+  // 라벨 원래대로
+  if (window.previousLabelMode !== undefined) {
+    labelMode = window.previousLabelMode;
+    updateLabelModeButton();
+    updateLabelDisplay();
+  }
+  
+  // 안내 메시지 제거
+  removeReadingModeNotification();
+}
+
+function updateLabelModeButton() {
+  if (labelMode === 'none') {
+    toggleBtn.textContent = "번호 / 하우스";
+  } else if (labelMode === 'number') {
+    toggleBtn.textContent = "번호 표시";
+  } else if (labelMode === 'house') {
+    toggleBtn.textContent = "하우스 표시";
+  }
+}
+
+function showReadingModeNotification() {
+  // 기존 알림 제거
+  removeReadingModeNotification();
+  
+  const notification = document.createElement('div');
+  notification.id = 'reading-mode-notification';
+  notification.className = 'reading-notification';
+  notification.innerHTML = `
+    <div class="notification-content">
+      <span>📖 리딩 모드 활성화</span>
+      <button id="exit-reading-mode" class="exit-reading-btn">종료</button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // 종료 버튼 이벤트
+  document.getElementById('exit-reading-mode').onclick = () => {
+    exitReadingMode();
+  };
+  
+  // 3초 후 자동으로 버튼만 남기고 텍스트 축소
+  setTimeout(() => {
+    if (notification) {
+      notification.classList.add('compact');
+    }
+  }, 3000);
+}
+
+function removeReadingModeNotification() {
+  const existing = document.getElementById('reading-mode-notification');
+  if (existing) {
+    existing.remove();
+  }
+}
 
 function clearAllHighlights() {
   document.querySelectorAll(".card").forEach(card => {
@@ -163,6 +259,7 @@ function applyFirstLine() {
 function applyChainTechnique() {
   if (!currentSignificator) {
     alert("먼저 시그니피케이터를 선택해주세요.");
+    readingModal.style.display = "block";
     return;
   }
   
@@ -185,6 +282,7 @@ function applyChainTechnique() {
 function applyPortrait() {
   if (!currentSignificator) {
     alert("먼저 시그니피케이터를 선택해주세요.");
+    readingModal.style.display = "block";
     return;
   }
   
@@ -208,6 +306,7 @@ function applyPortrait() {
 function applyCross() {
   if (!currentSignificator) {
     alert("먼저 시그니피케이터를 선택해주세요.");
+    readingModal.style.display = "block";
     return;
   }
   
