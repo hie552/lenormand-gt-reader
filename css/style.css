@@ -142,12 +142,14 @@ button:active {
 /* ===== 카드 상태 ===== */
 
 .card.selected {
-  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  outline: 3px solid #FFD700;
+  outline-offset: 2px;
   z-index: 10;
 }
 
 .card.chain {
-  filter: drop-shadow(0 0 15px rgba(79, 209, 197, 0.8));
+  outline: 3px solid #4fd1c5;
+  outline-offset: 2px;
   z-index: 10;
 }
 
@@ -157,20 +159,65 @@ button:active {
 }
 
 .card.significator {
-  filter: drop-shadow(0 0 20px rgba(186, 85, 211, 1));
+  outline: 4px solid #BA55D3;
+  outline-offset: 3px;
   z-index: 15;
+  animation: pulse 2s infinite;
 }
 
-.card.significator::after {
-  content: "★";
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 30px;
-  color: #BA55D3;
-  text-shadow: 0 0 10px #BA55D3;
-  z-index: 20;
-  pointer-events: none;
+@keyframes pulse {
+  0%, 100% {
+    outline-color: #BA55D3;
+    box-shadow: 0 0 15px rgba(186, 85, 211, 0.6);
+  }
+  50% {
+    outline-color: #DA70D6;
+    box-shadow: 0 0 25px rgba(186, 85, 211, 0.9);
+  }
+}
+
+/* ===== 리딩 기법 하이라이트 ===== */
+
+.card.technique-highlight {
+  outline: 3px solid #FFD700;
+  outline-offset: 2px;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.card.technique-dim {
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.card.first-line {
+  outline-color: #FF6B6B;
+  animation: firstLineGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes firstLineGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+  }
+}
+
+.card.chain-highlight {
+  outline-color: #4ECDC4;
+}
+
+.card.portrait-highlight {
+  outline-color: #95E1D3;
+}
+
+.card.cross-highlight {
+  outline-color: #F38181;
+}
+
+.card.house-highlight {
+  outline-color: #AA96DA;
 }
 
 /* ===== 카드 라벨 ===== */
@@ -396,6 +443,61 @@ button:active {
   color: white;
 }
 
+/* ===== 기법 가이드 표시 ===== */
+
+.technique-guide-display {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(184, 134, 11, 0.15) 100%);
+  border: 2px solid #FFD700;
+  border-radius: 10px;
+  animation: slideDown 0.4s ease;
+}
+
+.technique-guide-display.show {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.technique-guide-display h4 {
+  color: #FFD700;
+  font-size: 1.3em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.technique-guide-display p {
+  color: #e6e6e6;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+
+.technique-guide-display p strong {
+  color: #FFD700;
+}
+
+.technique-guide-display .tip {
+  background: rgba(186, 85, 211, 0.2);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #BA55D3;
+  margin-top: 15px;
+  color: #BA55D3;
+  font-weight: bold;
+}
+
 .ai-result {
   margin-top: 20px;
   padding: 20px;
@@ -571,138 +673,6 @@ button:active {
   box-shadow: 0 6px 15px rgba(184, 134, 11, 0.7);
 }
 
-/* ===== 모바일 반응형 ===== */
-
-@media screen and (max-width: 768px) {
-  .header h1 {
-    font-size: 1.6em;
-  }
-
-  .header h2 {
-    font-size: 1em;
-  }
-
-  .controls {
-    margin: 10px 0 20px;
-  }
-
-  button {
-    padding: 8px 14px;
-    font-size: 13px;
-    margin: 3px;
-  }
-
-  #tableau {
-    gap: 1vw;
-    padding-top: 25px;
-  }
-
-  .card-label {
-    top: -20px;
-  }
-
-  .card-label span {
-    font-size: 7px;
-    padding: 2px 5px;
-    letter-spacing: 0.2px;
-  }
-
-  .modal-content {
-    width: 95%;
-    padding: 25px 20px;
-    margin: 5% auto;
-  }
-
-  .modal-content h3 {
-    font-size: 1.5em;
-  }
-
-  .oracle-modal-content {
-    max-width: 95%;
-    padding: 25px 15px;
-  }
-
-  .oracle-modal-content h3 {
-    font-size: 1.4em;
-  }
-
-  .oracle-card-inner {
-    width: 130px;
-    height: 195px;
-  }
-
-  .oracle-cards {
-    gap: 15px;
-  }
-
-  .oracle-card p {
-    font-size: 1em;
-  }
-
-  #oracle-message {
-    font-size: 0.95em;
-    padding: 15px;
-  }
-
-  #draw-oracle,
-  #save-oracle {
-    font-size: 0.95em;
-    padding: 9px 16px;
-  }
-
-  .reading-modal-content {
-    max-height: 80vh;
-  }
-
-  .reading-section {
-    padding: 15px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .header h1 {
-    font-size: 1.4em;
-  }
-
-  .header h2 {
-    font-size: 0.9em;
-  }
-
-  .controls button {
-    padding: 7px 12px;
-    font-size: 12px;
-  }
-
-  #tableau {
-    padding-top: 20px;
-  }
-
-  .card-label {
-    top: -18px;
-  }
-
-  .card-label span {
-    font-size: 6px;
-    padding: 1px 4px;
-    letter-spacing: 0.1px;
-    margin-right: 2px;
-  }
-
-  .oracle-card-inner {
-    width: 110px;
-    height: 165px;
-  }
-
-  .oracle-cards {
-    gap: 10px;
-  }
-
-  .oracle-card p {
-    font-size: 0.9em;
-    margin-top: 8px;
-  }
-}
-
 /* ===== 카드 상세 모달 ===== */
 
 .card-detail-modal .modal-content {
@@ -800,7 +770,93 @@ button:active {
   font-weight: 500;
 }
 
+/* ===== 모바일 반응형 ===== */
+
 @media screen and (max-width: 768px) {
+  .header h1 {
+    font-size: 1.6em;
+  }
+
+  .header h2 {
+    font-size: 1em;
+  }
+
+  .controls {
+    margin: 10px 0 20px;
+  }
+
+  button {
+    padding: 8px 14px;
+    font-size: 13px;
+    margin: 3px;
+  }
+
+  #tableau {
+    gap: 1vw;
+    padding-top: 25px;
+  }
+
+  .card-label {
+    top: -20px;
+  }
+
+  .card-label span {
+    font-size: 7px;
+    padding: 2px 5px;
+    letter-spacing: 0.2px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 25px 20px;
+    margin: 5% auto;
+  }
+
+  .modal-content h3 {
+    font-size: 1.5em;
+  }
+
+  .oracle-modal-content {
+    max-width: 95%;
+    padding: 25px 15px;
+  }
+
+  .oracle-modal-content h3 {
+    font-size: 1.4em;
+  }
+
+  .oracle-card-inner {
+    width: 130px;
+    height: 195px;
+  }
+
+  .oracle-cards {
+    gap: 15px;
+  }
+
+  .oracle-card p {
+    font-size: 1em;
+  }
+
+  #oracle-message {
+    font-size: 0.95em;
+    padding: 15px;
+  }
+
+  #draw-oracle,
+  #save-oracle {
+    font-size: 0.95em;
+    padding: 9px 16px;
+  }
+
+  .reading-modal-content {
+    max-height: 80vh;
+  }
+
+  .reading-section {
+    padding: 15px;
+  }
+
   .card-detail-modal .modal-content {
     width: 95%;
     max-height: 90vh;
@@ -842,6 +898,48 @@ button:active {
 }
 
 @media screen and (max-width: 480px) {
+  .header h1 {
+    font-size: 1.4em;
+  }
+
+  .header h2 {
+    font-size: 0.9em;
+  }
+
+  .controls button {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  #tableau {
+    padding-top: 20px;
+  }
+
+  .card-label {
+    top: -18px;
+  }
+
+  .card-label span {
+    font-size: 6px;
+    padding: 1px 4px;
+    letter-spacing: 0.1px;
+    margin-right: 2px;
+  }
+
+  .oracle-card-inner {
+    width: 110px;
+    height: 165px;
+  }
+
+  .oracle-cards {
+    gap: 10px;
+  }
+
+  .oracle-card p {
+    font-size: 0.9em;
+    margin-top: 8px;
+  }
+
   .card-detail-image img {
     width: 150px;
   }
