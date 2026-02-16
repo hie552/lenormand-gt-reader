@@ -162,6 +162,9 @@ function exitReadingMode() {
   
   // 안내 메시지 제거
   removeReadingModeNotification();
+  
+  // AI 결과 패널 닫기
+  closeAIPanel();
 }
 
 function updateLabelModeButton() {
@@ -184,11 +187,17 @@ function showReadingModeNotification() {
   notification.innerHTML = `
     <div class="notification-content">
       <span>📖 리딩 모드 활성화</span>
+      <button id="ai-reading-btn" class="ai-reading-btn">🔮 AI 해석</button>
       <button id="exit-reading-mode" class="exit-reading-btn">종료</button>
     </div>
   `;
   
   document.body.appendChild(notification);
+  
+  // AI 해석 버튼 이벤트
+  document.getElementById('ai-reading-btn').onclick = () => {
+    showAIInterpretationPanel();
+  };
   
   // 종료 버튼 이벤트
   document.getElementById('exit-reading-mode').onclick = () => {
@@ -208,6 +217,235 @@ function removeReadingModeNotification() {
   if (existing) {
     existing.remove();
   }
+}
+
+function showAIInterpretationPanel() {
+  // 질문과 시그니피케이터 확인
+  if (!currentQuestion) {
+    alert("먼저 리딩 가이드에서 질문을 저장해주세요.");
+    readingModal.style.display = "block";
+    return;
+  }
+  
+  if (!currentSignificator) {
+    alert("먼저 리딩 가이드에서 시그니피케이터를 선택해주세요.");
+    readingModal.style.display = "block";
+    return;
+  }
+  
+  // 기존 패널 제거
+  closeAIPanel();
+  
+  // AI 패널 생성
+  const panel = document.createElement('div');
+  panel.id = 'ai-interpretation-panel';
+  panel.className = 'ai-panel';
+  panel.innerHTML = `
+    <div class="ai-panel-content">
+      <div class="ai-panel-header">
+        <h3>🔮 AI 카드 해석</h3>
+        <button class="ai-panel-close">&times;</button>
+      </div>
+      <div class="ai-panel-body">
+        <div class="ai-panel-info">
+          <p><strong>질문:</strong> ${currentQuestion}</p>
+          <p><strong>시그니피케이터:</strong> ${currentSignificator.name} (${currentSignificator.house}번 하우스)</p>
+          <p><strong>리딩 기법:</strong> ${getTechniqueName(currentTechnique)}</p>
+        </div>
+        <div id="ai-panel-result" class="ai-panel-result">
+          <p class="loading">🔮 AI가 카드를 해석하는 중...</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(panel);
+  
+  // 닫기 버튼 이벤트
+  panel.querySelector('.ai-panel-close').onclick = () => {
+    closeAIPanel();
+  };
+  
+  // AI 해석 시작
+  generateAIInterpretationForTechnique();
+}
+
+function closeAIPanel() {
+  const existing = document.getElementById('ai-interpretation-panel');
+  if (existing) {
+    existing.remove();
+  }
+}
+
+function getTechniqueName(technique) {
+  const names = {
+    'first-line': '첫 줄 요약',
+    'chain': '체인 기법',
+    'portrait': '초상화 기법',
+    'cross': '십자가 기법',
+    'house': '하우스 해석',
+    'overall': '전체 분위기'
+  };
+  return names[technique] || '알 수 없음';
+}
+
+async function generateAIInterpretationForTechnique() {
+  const resultDiv = document.getElementById('ai-panel-result');
+  
+  try {
+    const interpretation = await generateTechniqueSpecificInterpretation();
+    displayPanelInterpretation(interpretation);
+  } catch (error) {
+    resultDiv.innerHTML = '<p style="color: #ff6b6b;">해석 생성에 실패했습니다. 다시 시도해주세요.</p>';
+    console.error(error);
+  }
+}
+
+async function generateTechniqueSpecificInterpretation() {
+  const highlightedCards = getHighlightedCards();
+  
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2000,
+      messages: [
+        {
+          role: "user",
+          content: generateTechniquePrompt(highlightedCards)
+        }
+      ],
+    })
+  });
+  
+  const data = await response.json();
+  return data.content[0].text;
+}
+
+function getHighlightedCards() {
+  const highlighted = [];
+  
+  document.querySelectorAll(".card.technique-highlight").forEach(card => {
+    const house = parseInt(card.dataset.house);
+    const cardId = parseInt(card.dataset.cardId);
+    const cardInfo = cardMeanings[cardId];
+    
+    highlighted.push({
+      house: house,
+      cardId: cardId,
+      name: cardInfo.name,
+      keywords: cardInfo.keywords
+    });
+  });
+  
+  // 하우스 번호순으로 정렬
+  highlighted.sort((a, b) => a.house - b.house);
+  
+  return highlighted;
+}
+
+function generateTechniquePrompt(highlightedCards) {
+  const sigRow = Math.ceil(currentSignificator.house / 8);
+  const sigCol = ((currentSignificator.house - 1) % 8) + 1;
+  
+  const cardsList = highlightedCards.map(c => 
+    `${c.house}번 하우스: ${c.name} - ${c.keywords}`
+  ).join('\n');
+  
+  let techniqueGuide = '';
+  
+  switch(currentTechnique) {
+    case 'first-line':
+      techniqueGuide = `
+첫 줄(1-8번 하우스)의 카드들을 다음과 같이 해석해주세요:
+- 1-2-3번: 과거-현재-미래의 흐름
+- 4-5번: 기반과 안정성
+- 6-7번: 현재의 도전과 문제
+- 8번: 결론
+      `;
+      break;
+    case 'chain':
+      techniqueGuide = `
+체인 기법으로 다음을 분석해주세요:
+- 같은 행: 현재 상황과 주변 환경
+- 같은 열: 과거에서 미래로의 흐름
+- 대각선: 숨겨진 영향
+      `;
+      break;
+    case 'portrait':
+      techniqueGuide = `
+초상화 기법으로 시그니피케이터 주변 8장을 분석해주세요:
+- 위: 생각과 의식
+- 아래: 무의식과 감정
+- 좌우: 과거와 미래
+      `;
+      break;
+    case 'cross':
+      techniqueGuide = `
+십자가 기법으로 상하좌우 4방향을 분석해주세요:
+- 위: 목표와 의식
+- 아래: 기반과 과거
+- 왼쪽: 떠나가는 것
+- 오른쪽: 다가오는 것
+      `;
+      break;
+    case 'house':
+      techniqueGuide = `
+각 카드가 놓인 하우스의 의미와 함께 해석해주세요.
+카드의 본래 의미 + 하우스의 의미를 복합적으로 분석해주세요.
+      `;
+      break;
+    case 'overall':
+      techniqueGuide = `
+전체적인 분위기를 분석해주세요:
+- 긍정/부정 카드의 비율
+- 특정 테마의 집중도
+- 마지막 4장(33-36번)의 최종 결과
+      `;
+      break;
+  }
+  
+  return `당신은 레노먼드 카드 전문가입니다. "${getTechniqueName(currentTechnique)}" 기법으로 다음 리딩을 해석해주세요.
+
+질문: ${currentQuestion}
+
+시그니피케이터: ${currentSignificator.name} (${currentSignificator.house}번 하우스 - ${sigRow}행 ${sigCol}열)
+
+${techniqueGuide}
+
+분석할 카드들:
+${cardsList}
+
+다음 형식으로 해석해주세요:
+
+**1. ${getTechniqueName(currentTechnique)} 해석**
+선택된 기법에 맞춰 카드들의 의미를 분석해주세요.
+
+**2. 질문에 대한 답변**
+질문과 관련하여 카드들이 말하는 것을 명확하게 설명해주세요.
+
+**3. 실천 조언**
+구체적이고 실천 가능한 조언을 제시해주세요.
+
+명확하고 이해하기 쉽게 한국어로 작성해주세요.`;
+}
+
+function displayPanelInterpretation(text) {
+  const sections = text.split(/\n\n+/);
+  let html = '';
+  
+  sections.forEach(section => {
+    if (section.includes('**')) {
+      section = section.replace(/\*\*(.*?)\*\*/g, '<h5>$1</h5>');
+    }
+    html += `<p>${section}</p>`;
+  });
+  
+  const resultDiv = document.getElementById('ai-panel-result');
+  resultDiv.innerHTML = html;
 }
 
 function clearAllHighlights() {
@@ -242,7 +480,6 @@ function applyTechnique(technique) {
 }
 
 function applyFirstLine() {
-  // 첫 줄 (1-8번 하우스) 하이라이트
   for (let i = 0; i < 8; i++) {
     const card = cardElements[i];
     if (card) {
@@ -250,7 +487,6 @@ function applyFirstLine() {
     }
   }
   
-  // 나머지 희미하게
   for (let i = 8; i < cardElements.length; i++) {
     cardElements[i].cardDiv.classList.add("technique-dim");
   }
@@ -290,7 +526,6 @@ function applyPortrait() {
   const row = Math.ceil(h / 8);
   const col = ((h - 1) % 8) + 1;
   
-  // 시그니피케이터와 주변 8장
   cardElements.forEach(el => {
     const elRow = Math.ceil(el.house / 8);
     const elCol = ((el.house - 1) % 8) + 1;
@@ -314,7 +549,6 @@ function applyCross() {
   const row = Math.ceil(h / 8);
   const col = ((h - 1) % 8) + 1;
   
-  // 십자가 (상하좌우)
   cardElements.forEach(el => {
     const elRow = Math.ceil(el.house / 8);
     const elCol = ((el.house - 1) % 8) + 1;
@@ -331,14 +565,12 @@ function applyCross() {
 }
 
 function applyHouse() {
-  // 모든 카드를 하우스로 읽기 (전체 표시)
   cardElements.forEach(el => {
     el.cardDiv.classList.add("technique-highlight", "house-highlight");
   });
 }
 
 function applyOverall() {
-  // 전체 분위기 - 모든 카드 표시
   cardElements.forEach(el => {
     el.cardDiv.classList.add("technique-highlight");
   });
