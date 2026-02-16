@@ -32,6 +32,49 @@ function shuffle(array) {
   return arr;
 }
 
+function showCardDetail(cardId) {
+  const card = cardMeanings[cardId];
+  if (!card) return;
+  
+  const modal = document.createElement('div');
+  modal.className = 'modal card-detail-modal';
+  modal.style.display = 'block';
+  
+  modal.innerHTML = `
+    <div class="modal-content card-detail-content">
+      <span class="close card-detail-close">&times;</span>
+      <h3>${cardId}. ${card.name}</h3>
+      <div class="card-detail-body">
+        <div class="card-detail-image">
+          <img src="images/lenormand/${String(cardId).padStart(2, '0')}_${card.name.toLowerCase().replace(/ /g, '')}.png" alt="${card.name}">
+        </div>
+        <div class="card-detail-info">
+          <p class="card-keywords"><strong>키워드:</strong> ${card.keywords}</p>
+          <p class="card-description">${card.description}</p>
+          <div class="card-character">
+            <p class="character-name"><strong>🎭 ${card.character}</strong></p>
+            <p class="character-quote">"${card.quote}"</p>
+            <p class="character-detail">${card.detail}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  const closeBtn = modal.querySelector('.card-detail-close');
+  closeBtn.onclick = () => {
+    document.body.removeChild(modal);
+  };
+  
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+    }
+  };
+}
+
 function renderCards() {
   tableau.innerHTML = "";
   cardElements.length = 0;
@@ -71,6 +114,12 @@ function renderCards() {
 
     cardDiv.addEventListener("click", () => {
       if (!cardDiv.classList.contains("revealed")) return;
+      
+      // Shift 키를 누른 채 클릭하면 카드 설명 표시
+      if (event.shiftKey) {
+        showCardDetail(card.id);
+        return;
+      }
       
       cardDiv.classList.toggle("selected");
       
@@ -204,7 +253,6 @@ saveBtn.onclick = async () => {
   try {
     const html2canvas = await import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js");
     
-    // 타블로를 감싸는 컨테이너 생성
     const captureContainer = document.createElement('div');
     captureContainer.style.cssText = `
       position: relative;
@@ -216,7 +264,6 @@ saveBtn.onclick = async () => {
       display: inline-block;
     `;
     
-    // 배경 오버레이 추가
     const overlay = document.createElement('div');
     overlay.style.cssText = `
       position: absolute;
@@ -228,7 +275,6 @@ saveBtn.onclick = async () => {
       pointer-events: none;
     `;
     
-    // 타블로 복제
     const tableauClone = tableau.cloneNode(true);
     tableauClone.style.position = 'relative';
     tableauClone.style.zIndex = '1';
@@ -236,12 +282,10 @@ saveBtn.onclick = async () => {
     captureContainer.appendChild(overlay);
     captureContainer.appendChild(tableauClone);
     
-    // body에 임시로 추가 (화면 밖에)
     captureContainer.style.position = 'absolute';
     captureContainer.style.left = '-9999px';
     document.body.appendChild(captureContainer);
     
-    // 스크린샷 캡처
     const canvas = await html2canvas.default(captureContainer, {
       backgroundColor: null,
       scale: 2,
@@ -249,10 +293,8 @@ saveBtn.onclick = async () => {
       useCORS: true
     });
     
-    // 임시 컨테이너 제거
     document.body.removeChild(captureContainer);
     
-    // 다운로드
     const link = document.createElement("a");
     link.download = `lenormand_reading_${new Date().getTime()}.png`;
     link.href = canvas.toDataURL();
