@@ -948,3 +948,87 @@ button:active {
     font-size: 1.3em;
   }
 }
+
+/* ===== 리딩 모드 알림 ===== */
+
+.reading-notification {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+  animation: slideInDown 0.5s ease;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.notification-content {
+  background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+  padding: 12px 24px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(184, 134, 11, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.notification-content span {
+  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+.exit-reading-btn {
+  background: rgba(26, 26, 46, 0.8);
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  padding: 6px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.exit-reading-btn:hover {
+  background: #1a1a2e;
+  transform: scale(1.05);
+}
+
+.reading-notification.compact .notification-content span {
+  display: none;
+}
+
+.reading-notification.compact .notification-content {
+  padding: 10px 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .reading-notification {
+    top: 60px;
+  }
+  
+  .notification-content {
+    padding: 10px 18px;
+    font-size: 0.9em;
+  }
+  
+  .notification-content span {
+    font-size: 0.9em;
+  }
+  
+  .exit-reading-btn {
+    padding: 5px 12px;
+    font-size: 0.85em;
+  }
+}
