@@ -1,38 +1,326 @@
 const cardMeanings = {
-  1: { name: "Rider", keywords: "뉴스, 메시지, 방문자, 빠른 움직임, 시작", positive: true },
-  2: { name: "Clover", keywords: "행운, 기회, 짧은 행복, 가벼움", positive: true },
-  3: { name: "Ship", keywords: "여행, 거리, 무역, 이동, 탐험", positive: true },
-  4: { name: "House", keywords: "집, 가족, 안정, 전통, 소속", positive: true },
-  5: { name: "Tree", keywords: "건강, 성장, 뿌리, 생명력, 인내", positive: true },
-  6: { name: "Cloud", keywords: "불확실성, 혼란, 의심, 모호함", positive: false },
-  7: { name: "Snake", keywords: "복잡함, 유혹, 지혜, 배신, 욕망", positive: false },
-  8: { name: "Coffin", keywords: "종료, 변화, 질병, 슬픔, 재생", positive: false },
-  9: { name: "Bouquet", keywords: "선물, 아름다움, 초대, 감사, 기쁨", positive: true },
-  10: { name: "Scythe", keywords: "위험, 갑작스러움, 결단, 수확, 날카로움", positive: false },
-  11: { name: "Broom", keywords: "대화, 말다툼, 논쟁, 소통, 소문", positive: false },
-  12: { name: "Owls", keywords: "스트레스, 걱정, 불안, 긴장, 소통", positive: false },
-  13: { name: "Child", keywords: "새로운 시작, 순수함, 작은 것, 젊음", positive: true },
-  14: { name: "Fox", keywords: "속임수, 영리함, 직장, 전략, 주의", positive: false },
-  15: { name: "Bear", keywords: "힘, 권위, 재정, 리더십, 보호", positive: true },
-  16: { name: "Star", keywords: "희망, 영감, 명확성, 인도, 목표", positive: true },
-  17: { name: "Stork", keywords: "변화, 이사, 개선, 이동, 진화", positive: true },
-  18: { name: "Dog", keywords: "우정, 충성심, 신뢰, 동반자, 지원", positive: true },
-  19: { name: "Tower", keywords: "고립, 권위, 기관, 독립, 경계", positive: false },
-  20: { name: "Garden", keywords: "사회, 대중, 행사, 네트워킹, 공개", positive: true },
-  21: { name: "Mountain", keywords: "장애물, 지연, 도전, 막힘, 인내", positive: false },
-  22: { name: "Crossroad", keywords: "선택, 결정, 대안, 자유, 방향", positive: true },
-  23: { name: "Mice", keywords: "손실, 스트레스, 소모, 감소, 걱정", positive: false },
-  24: { name: "Heart", keywords: "사랑, 감정, 열정, 관계, 기쁨", positive: true },
-  25: { name: "Ring", keywords: "약속, 계약, 연결, 결속, 반복", positive: true },
-  26: { name: "Book", keywords: "지식, 비밀, 교육, 발견, 연구", positive: true },
-  27: { name: "Letter", keywords: "문서, 메시지, 편지, 소식, 정보", positive: true },
-  28: { name: "Man", keywords: "남성, 질문자(남), 논리, 행동", positive: true },
-  29: { name: "Woman", keywords: "여성, 질문자(여), 직관, 감정", positive: true },
-  30: { name: "Lily", keywords: "평화, 성숙, 지혜, 성, 조화", positive: true },
-  31: { name: "Sun", keywords: "성공, 행복, 에너지, 승리, 따뜻함", positive: true },
-  32: { name: "Moon", keywords: "감정, 명성, 인정, 로맨스, 직관", positive: true },
-  33: { name: "Key", keywords: "해결책, 확실성, 중요함, 열림, 성취", positive: true },
-  34: { name: "Fish", keywords: "돈, 풍요, 사업, 가치, 흐름", positive: true },
-  35: { name: "Anchor", keywords: "안정성, 지속, 목표, 안전, 확고함", positive: true },
-  36: { name: "Cross", keywords: "운명, 부담, 시련, 영적 성장, 카르마", positive: false }
+  1: { 
+    name: "Rider", 
+    keywords: "소식, 메시지, 열정, 활력, 빠른 속도, 이동, 젊은 남성",
+    description: "새로운 소식이나 메시지가 곧 도착합니다. 빠른 속도로 진행되는 일이나 활력 넘치는 시작을 의미합니다.",
+    character: "루베우스 해그리드",
+    quote: "해리, 넌 마법사야",
+    detail: "해리에게 처음으로 마법 세계를 소개해 준 전령사. 자신의 비행 오토바이를 타고 직접 찾아와 편지를 전달했습니다.",
+    positive: true 
+  },
+  2: { 
+    name: "Clover", 
+    keywords: "행운, 희망, 기쁨, 작은 금전운, 단발적인, 기회, 소소한",
+    description: "예상치 못한 작은 행운이 찾아옵니다. 단기적이지만 기쁜 일이 생기며, 소소한 기회를 잡을 수 있습니다.",
+    character: "펠릭스 펠리시스",
+    quote: "리퀴드 럭(Liquid Luck)",
+    detail: "행운의 물약으로, 마신 사람에게 초월적인 직감과 강한 자신감을 선사합니다. 너무 자주 마시지 않도록 조심해야 합니다.",
+    positive: true 
+  },
+  3: { 
+    name: "Ship", 
+    keywords: "여행, 해외, 먼 거리, 변화, 교환, 큰 금전, 확장",
+    description: "물리적 또는 정신적 여행을 의미합니다. 새로운 환경으로의 이동이나 시야의 확장이 예상됩니다.",
+    character: "덤스트랭 마법학교",
+    quote: "북유럽의 명문 마법학교",
+    detail: "거대한 유령선을 타고 나타난 덤스트랭. 먼 곳에서 온 방문자들은 새로운 가능성과 교류를 상징합니다.",
+    positive: true 
+  },
+  4: { 
+    name: "House", 
+    keywords: "집, 건물, 휴식, 사생활, 보호, 가족, 전통, 내부",
+    description: "안정과 안전, 가족과 집을 나타냅니다. 전통적인 가치와 편안한 공간에서의 휴식이 필요합니다.",
+    character: "버로우",
+    quote: "위즐리 가족의 보금자리",
+    detail: "마법으로 지탱되는 낡지만 따뜻한 집. 외관은 기울어졌지만 내부에는 가족의 화목한 일상이 가득합니다.",
+    positive: true 
+  },
+  5: { 
+    name: "Tree", 
+    keywords: "건강, 뿌리깊은, 정체된, 매우 오랜 기간, 균형, 꾸준함, 성장, 과거",
+    description: "건강과 생명력, 뿌리 깊은 문제를 의미합니다. 오랜 시간에 걸친 성장과 균형이 필요합니다.",
+    character: "후려치는 버드나무",
+    quote: "시간이 흐르며 성장한 거대한 나무",
+    detail: "처음에는 작았지만 시간이 지나며 거대하게 성장했습니다. 과거로부터 이어져 온 것들의 힘을 상징합니다.",
+    positive: true 
+  },
+  6: { 
+    name: "Cloud", 
+    keywords: "긴장감, 혼란, 의심, 오해, 보이지않는, 자연재해, 고난",
+    description: "불확실성과 혼란을 나타냅니다. 상황이 명확하지 않으며, 의심과 오해가 있을 수 있습니다.",
+    character: "투명 망토",
+    quote: "보이지 않게 만드는 힘",
+    detail: "덮은 부분을 완벽하게 투명하게 만듭니다. 숨겨진 것, 명확하지 않은 상황을 의미합니다.",
+    positive: false 
+  },
+  7: { 
+    name: "Snake", 
+    keywords: "갈등, 이중적인, 배신, 속임수, 거짓말, 성적인 욕망, 지식, 약",
+    description: "복잡한 상황이나 이중성을 나타냅니다. 지혜로울 수도 있지만 배신의 가능성도 있습니다.",
+    character: "바실리스크",
+    quote: "뱀들의 왕",
+    detail: "강력하지만 위험한 존재. 그 독은 5년이 지나도 남아있을 만큼 강력합니다. 깊은 상처와 배신을 상징합니다.",
+    positive: false 
+  },
+  8: { 
+    name: "Coffin", 
+    keywords: "끝, 큰 손실, 공허함, 오래된 병, 슬픔, 큰 변화, 정체된 시간",
+    description: "종결과 변화를 의미합니다. 무언가의 끝이지만 동시에 재생과 새로운 시작의 가능성도 있습니다.",
+    character: "미스터리 부서 아치문의 베일",
+    quote: "돌아올 수 없는 곳",
+    detail: "한번 넘어가면 되돌릴 수 없는 문. 깊은 슬픔과 돌이킬 수 없는 상실을 상징합니다.",
+    positive: false 
+  },
+  9: { 
+    name: "Bouquet", 
+    keywords: "결실, 선물, 호의, 화려함, 매력적인, 행복, 대가없는 도움, 초대",
+    description: "선물과 호의, 아름다운 결과를 나타냅니다. 감사와 기쁨이 가득한 순간입니다.",
+    character: "오르키데우스 주문",
+    quote: "꽃다발을 피워내는 마법",
+    detail: "지팡이 끝에서 아름다운 꽃 부케가 피어납니다. 순수한 선의와 아름다움을 상징합니다.",
+    positive: true 
+  },
+  10: { 
+    name: "Scythe", 
+    keywords: "절단, 갑작스런, 수확, 수술, 날카로운, 이별, 경고, 제한적인 시간",
+    description: "갑작스러운 변화나 결단을 의미합니다. 빠른 행동이 필요하거나 예상치 못한 이별이 있을 수 있습니다.",
+    character: "사신",
+    quote: "교활하고 영리한 존재",
+    detail: "삼형제 이야기 속 사신. 욕심은 갑작스러운 파멸을, 지혜와 겸손은 평온한 죽음을 가져옵니다.",
+    positive: false 
+  },
+  11: { 
+    name: "Broom", 
+    keywords: "반복적인, 갈등, 경쟁, 스포츠, 꾸준한 노력, 비난, 적의, 물리적인",
+    description: "경쟁과 갈등, 반복적인 노력을 나타냅니다. 격렬한 경쟁 속에서 꾸준함이 필요합니다.",
+    character: "퀴디치",
+    quote: "격렬한 마법사들의 스포츠",
+    detail: "빠르고 위험하지만 인기 높은 게임. 격렬한 몸싸움과 경쟁을 통해 승리를 얻습니다.",
+    positive: false 
+  },
+  12: { 
+    name: "Owls", 
+    keywords: "입소문, 걱정, 스트레스, 의사소통, 민감한, 작은 모임, 문제해결, 빠른 반응",
+    description: "의사소통과 메시지를 나타냅니다. 걱정거리가 있지만 대화를 통해 해결할 수 있습니다.",
+    character: "헤드위그",
+    quote: "충실한 메신저",
+    detail: "편지를 전달하고 위로해주는 친구. 소통의 창구이자 신뢰할 수 있는 동반자입니다.",
+    positive: false 
+  },
+  13: { 
+    name: "Child", 
+    keywords: "호기심, 장난기, 가능성, 작은 것, 경험부족, 미래, 무개념, 새로움",
+    description: "새로운 시작과 순수함을 의미합니다. 경험은 부족하지만 가능성이 무한합니다.",
+    character: "콜린 크리비",
+    quote: "열정적인 1학년 학생",
+    detail: "호기심 많고 열정적이지만 미숙한 후배. 순수한 동경과 새로운 시작을 상징합니다.",
+    positive: true 
+  },
+  14: { 
+    name: "Fox", 
+    keywords: "영리함, 속임수, 의심, 사기, 업무, 자기중심적, 독창적, 교활함",
+    description: "영리함과 전략을 나타냅니다. 조심해야 할 속임수가 있거나, 창의적인 해결책이 필요합니다.",
+    character: "코니시 픽시",
+    quote: "짓궂은 장난꾸러기",
+    detail: "작지만 교활하고 장난기 많은 생물. 영리함으로 상황을 유리하게 만들거나 혼란을 일으킵니다.",
+    positive: false 
+  },
+  15: { 
+    name: "Bear", 
+    keywords: "강한 의지, 육체적인 힘, 보호자, 재정상황, 리더, 압도적인, 용기, 지도",
+    description: "힘과 권위, 보호를 의미합니다. 강한 리더십과 재정적 안정성을 나타냅니다.",
+    character: "매드아이 무디",
+    quote: "실력 있는 오러",
+    detail: "괴팍하지만 강력한 보호자. 진정으로 약자를 보호하고 존중하는 강한 힘을 가진 인물입니다.",
+    positive: true 
+  },
+  16: { 
+    name: "Star", 
+    keywords: "소원, 기적, 성공, 낙천적인, 영감, 유명인, 위치, 주목받는",
+    description: "희망과 영감, 성공을 의미합니다. 꿈을 향한 여정에서 밝은 빛이 비춥니다.",
+    character: "불의 잔",
+    quote: "챔피언을 선택하는 마법의 잔",
+    detail: "명예와 상금, 주목을 가져다주는 기회. 꿈과 희망을 실현할 수 있는 순간입니다.",
+    positive: true 
+  },
+  17: { 
+    name: "Stork", 
+    keywords: "변화, 장소 이동, 임신, 잉태, 반복, 긴 시간, 계절, 필연적",
+    description: "변화와 이동을 나타냅니다. 새로운 시작이나 장소의 변화가 예상됩니다.",
+    character: "천둥새",
+    quote: "폭풍을 몰고 오는 마법 동물",
+    detail: "날씨를 컨트롤하는 힘을 가진 존재. 큰 변화와 새로운 환경으로의 이동을 상징합니다.",
+    positive: true 
+  },
+  18: { 
+    name: "Dog", 
+    keywords: "친구, 우정, 피난처, 믿음, 신뢰, 길들여진, 지원, 보호자",
+    description: "충성심과 우정을 의미합니다. 믿을 수 있는 친구와 지원이 있습니다.",
+    character: "패드풋",
+    quote: "시리우스 블랙의 애니마구스",
+    detail: "겉으로는 위협적이지만 실제로는 보호자. 진정한 충성심과 희생적인 사랑을 상징합니다.",
+    positive: true 
+  },
+  19: { 
+    name: "Tower", 
+    keywords: "명예, 정부, 큰 건물, 자기규율, 수직적, 고립, 경계, 법적인",
+    description: "권위와 고립을 나타냅니다. 공식적인 문제나 독립성이 필요한 상황입니다.",
+    character: "교장실",
+    quote: "높은 탑의 집무실",
+    detail: "암호로 보호받는 높은 곳. 권위와 지혜, 동시에 고립과 경계를 의미합니다.",
+    positive: false 
+  },
+  20: { 
+    name: "Garden", 
+    keywords: "커뮤니티, 팀워크, 사회적인 이미지, 문화, 대중적, 관심사, 개방된, 여가생활",
+    description: "사회적 모임과 커뮤니티를 의미합니다. 사람들과의 교류와 공유가 중요합니다.",
+    character: "해그리드의 오두막",
+    quote: "친구들이 모이는 따뜻한 공간",
+    detail: "자주 찾아와 시간을 보내는 편안한 장소. 공동체와 열린 교류의 공간입니다.",
+    positive: true 
+  },
+  21: { 
+    name: "Mountain", 
+    keywords: "시련, 장기적인 문제, 막막함, 멀리 있는, 정상, 끈기, 외교문제, 지연",
+    description: "장애물과 도전을 나타냅니다. 극복하기 어려워 보이지만 인내가 필요합니다.",
+    character: "금지된 숲",
+    quote: "어둡고 위험한 시련의 장소",
+    detail: "깊고 어두운 숲 속에는 수많은 위험이 도사리고 있습니다. 긴 여정과 시련을 상징합니다.",
+    positive: false 
+  },
+  22: { 
+    name: "Crossroad", 
+    keywords: "분기점, 중요한 결정, 갈라짐, 망설임, 자유의지, 미래를 향한 통로, 다른 방향성",
+    description: "선택의 순간을 의미합니다. 여러 가능성 중 하나를 선택해야 합니다.",
+    character: "움직이는 계단",
+    quote: "방향을 바꾸는 마법의 계단",
+    detail: "수시로 움직여 다른 길로 안내합니다. 선택과 결정, 새로운 가능성을 상징합니다.",
+    positive: true 
+  },
+  23: { 
+    name: "Mice", 
+    keywords: "손해, 결핍, 보이지 않는, 감염, 중독, 낡은, 지속적인 불쾌감, 해로운",
+    description: "서서히 손실되는 것을 의미합니다. 작지만 지속적인 문제가 있습니다.",
+    character: "스캐버스",
+    quote: "피터 패티그루의 변신",
+    detail: "10년 넘게 숨어 지낸 배신자. 눈에 보이지 않는 손실과 서서히 퍼지는 배신을 상징합니다.",
+    positive: false 
+  },
+  24: { 
+    name: "Heart", 
+    keywords: "애정, 용서, 열정, 충만함, 활력, 본능적인, 감정적인 관계",
+    description: "사랑과 감정을 나타냅니다. 깊은 애정과 열정적인 관계를 의미합니다.",
+    character: "아모텐시아",
+    quote: "강력한 사랑의 묘약",
+    detail: "자신이 좋아하는 향이 나는 물약. 깊은 애정과 집착, 본능적인 끌림을 상징합니다.",
+    positive: true 
+  },
+  25: { 
+    name: "Ring", 
+    keywords: "약속, 결혼, 소속감, 계약, 되돌아오는, 귀금속, 순환, 영원함",
+    description: "약속과 연결을 의미합니다. 계약이나 영원한 유대를 나타냅니다.",
+    character: "곤트의 반지",
+    quote: "대대로 내려온 유산",
+    detail: "가문에 전해 내려온 반지. 영원한 유대와 되돌아오는 순환을 상징합니다.",
+    positive: true 
+  },
+  26: { 
+    name: "Book", 
+    keywords: "교육, 연구, 정보, 숨겨진 진실, 발견, 비밀, 깨달음, 학습적인 지혜",
+    description: "지식과 비밀을 나타냅니다. 배움과 발견, 숨겨진 정보가 있습니다.",
+    character: "괴물 책",
+    quote: "살아있는 교과서",
+    detail: "난폭하지만 등을 쓰다듬으면 얌전해지는 책. 지식은 다루기 나름임을 상징합니다.",
+    positive: true 
+  },
+  27: { 
+    name: "Letter", 
+    keywords: "자료, 문서, 소식, 통보, 기록, 출력물, 시간이 걸리는 소식, 감정이 동반되는",
+    description: "중요한 소식이나 문서를 의미합니다. 공식적인 통보나 감정이 담긴 메시지가 옵니다.",
+    character: "호그와트 입학통지서",
+    quote: "새로운 시작을 알리는 편지",
+    detail: "인생을 바꾸는 중요한 통지. 공식적인 소식과 새로운 기회를 상징합니다.",
+    positive: true 
+  },
+  28: { 
+    name: "Man", 
+    keywords: "남성적인, 활동적인, 의지, 힘, 대담한, 진취적인, 외향적인, 남자 지인",
+    description: "질문자 본인(남성) 또는 중요한 남성을 나타냅니다. 활동적이고 의지가 강합니다.",
+    character: "론 위즐리",
+    quote: "의리 있는 친구",
+    detail: "평범해 보이지만 친구를 위해 희생할 줄 아는 용기를 지닌 인물입니다.",
+    positive: true 
+  },
+  29: { 
+    name: "Woman", 
+    keywords: "여성적인, 수용적인, 의지, 감수성, 소심한, 내향적인, 여자 지인",
+    description: "질문자 본인(여성) 또는 중요한 여성을 나타냅니다. 지혜롭고 감수성이 풍부합니다.",
+    character: "헤르미온느 그레인저",
+    quote: "똑똑하고 감수성 풍부한 친구",
+    detail: "당차 보이지만 눈물도 많고 감수성이 풍부한 인물. 지혜와 감정의 조화를 상징합니다.",
+    positive: true 
+  },
+  30: { 
+    name: "Lily", 
+    keywords: "순수함, 매력적인, 오랜 시간, 지혜, 독신, 나이 많은, 관능적인, 여성",
+    description: "성숙한 여성이나 지혜를 의미합니다. 순수함과 아름다움, 깊은 지혜가 있습니다.",
+    character: "로웨나 래번클로",
+    quote: "현명하고 아름다운 마녀",
+    detail: "뛰어난 지성과 창의성을 가진 설립자. 성숙한 지혜와 아름다움을 상징합니다.",
+    positive: true 
+  },
+  31: { 
+    name: "Sun", 
+    keywords: "확실한 보상, 인기, 명확한, 생명력, 자신감, 낙관적인, 창조성, 행복",
+    description: "성공과 행복을 나타냅니다. 긍정적인 결과와 확실한 보상이 있습니다.",
+    character: "퍽스",
+    quote: "불사조의 재생과 치유",
+    detail: "죽음 후 다시 부활하며 치유의 눈물을 흘리는 불사조. 성공과 재생을 상징합니다.",
+    positive: true 
+  },
+  32: { 
+    name: "Moon", 
+    keywords: "능력을 인정받는, 모성애, 잠재력, 감각, 보이지 않는, 어둠, 순환적 주기, 다양한 아름다움",
+    description: "인정과 명성, 감정을 나타냅니다. 숨겨진 잠재력과 직관이 중요합니다.",
+    character: "패트로누스",
+    quote: "행복한 기억으로 만드는 수호령",
+    detail: "시전자마다 다른 형태로 나타나는 수호령. 각자의 아름다움과 잠재력을 상징합니다.",
+    positive: true 
+  },
+  33: { 
+    name: "Key", 
+    keywords: "해결책, 수단, 중대한 결정, 획기적인, 잠금해제, 통찰력, 자유, 새로운 기회",
+    description: "문제의 해결책을 의미합니다. 중요한 열쇠나 획기적인 방법을 찾게 됩니다.",
+    character: "날개달린 열쇠",
+    quote: "문을 여는 진짜 열쇠",
+    detail: "가짜들 사이에서 진짜를 찾아내는 순발력. 핵심적인 해결책과 통찰력을 상징합니다.",
+    positive: true 
+  },
+  34: { 
+    name: "Fish", 
+    keywords: "금전, 흐름, 순환, 가치, 일의 다양성, 변화, 풍부함, 거래",
+    description: "재정과 사업을 나타냅니다. 돈의 흐름과 가치 있는 거래가 있습니다.",
+    character: "니플러",
+    quote: "반짝이는 것을 모으는 생물",
+    detail: "주머니에 보물을 수집하는 귀여운 생물. 재물의 축적과 가치를 상징합니다.",
+    positive: true 
+  },
+  35: { 
+    name: "Anchor", 
+    keywords: "견고함, 안전, 신뢰, 고정, 일관성 있는, 확실한 목표, 벗어나기 힘든",
+    description: "안정성과 목표를 의미합니다. 확고한 신념과 변하지 않는 기반이 있습니다.",
+    character: "호그와트 마법학교",
+    quote: "가장 안전한 장소",
+    detail: "수백 년간 보호받아온 성. 확고한 안전과 변하지 않는 안정성을 상징합니다.",
+    positive: true 
+  },
+  36: { 
+    name: "Cross", 
+    keywords: "무거운 책임감, 과도한 욕심, 절대적 믿음, 거부할 수 없는 운명, 절망, 희생, 강한 정신력",
+    description: "운명과 시련을 나타냅니다. 무거운 짐이지만 이를 통한 성장이 있습니다.",
+    character: "살아남은 아이",
+    quote: "해리 포터",
+    detail: "의도치 않은 영웅의 운명. 무거운 책임과 희생, 그리고 결국 승리하는 강한 정신력을 상징합니다.",
+    positive: false 
+  }
 };
