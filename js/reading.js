@@ -91,13 +91,252 @@ function enableCustomSignificatorMode() {
   });
 }
 
+// 리딩 기법 적용
 document.querySelectorAll(".technique-btn").forEach(btn => {
   btn.addEventListener("click", function() {
+    const technique = this.dataset.technique;
+    
+    // 기존 하이라이트 제거
+    clearAllHighlights();
+    
+    // 모든 버튼 비활성화
     document.querySelectorAll(".technique-btn").forEach(b => b.classList.remove("active"));
+    
+    // 현재 버튼 활성화
     this.classList.add("active");
-    currentTechnique = this.dataset.technique;
+    currentTechnique = technique;
+    
+    // 기법 적용
+    applyTechnique(technique);
+    
+    // 설명 표시
+    showTechniqueGuide(technique);
   });
 });
+
+function clearAllHighlights() {
+  document.querySelectorAll(".card").forEach(card => {
+    card.classList.remove("technique-highlight", "technique-dim", "first-line", "chain-highlight", "portrait-highlight", "cross-highlight", "house-highlight");
+  });
+}
+
+function applyTechnique(technique) {
+  clearAllHighlights();
+  
+  switch(technique) {
+    case 'first-line':
+      applyFirstLine();
+      break;
+    case 'chain':
+      applyChainTechnique();
+      break;
+    case 'portrait':
+      applyPortrait();
+      break;
+    case 'cross':
+      applyCross();
+      break;
+    case 'house':
+      applyHouse();
+      break;
+    case 'overall':
+      applyOverall();
+      break;
+  }
+}
+
+function applyFirstLine() {
+  // 첫 줄 (1-8번 하우스) 하이라이트
+  for (let i = 0; i < 8; i++) {
+    const card = cardElements[i];
+    if (card) {
+      card.cardDiv.classList.add("technique-highlight", "first-line");
+    }
+  }
+  
+  // 나머지 희미하게
+  for (let i = 8; i < cardElements.length; i++) {
+    cardElements[i].cardDiv.classList.add("technique-dim");
+  }
+}
+
+function applyChainTechnique() {
+  if (!currentSignificator) {
+    alert("먼저 시그니피케이터를 선택해주세요.");
+    return;
+  }
+  
+  const h = currentSignificator.house;
+  const row = Math.ceil(h / 8);
+  const col = ((h - 1) % 8) + 1;
+  
+  cardElements.forEach(el => {
+    const elRow = Math.ceil(el.house / 8);
+    const elCol = ((el.house - 1) % 8) + 1;
+    
+    if (elRow === row || elCol === col || Math.abs(elRow - row) === Math.abs(elCol - col)) {
+      el.cardDiv.classList.add("technique-highlight", "chain-highlight");
+    } else {
+      el.cardDiv.classList.add("technique-dim");
+    }
+  });
+}
+
+function applyPortrait() {
+  if (!currentSignificator) {
+    alert("먼저 시그니피케이터를 선택해주세요.");
+    return;
+  }
+  
+  const h = currentSignificator.house;
+  const row = Math.ceil(h / 8);
+  const col = ((h - 1) % 8) + 1;
+  
+  // 시그니피케이터와 주변 8장
+  cardElements.forEach(el => {
+    const elRow = Math.ceil(el.house / 8);
+    const elCol = ((el.house - 1) % 8) + 1;
+    
+    if (Math.abs(elRow - row) <= 1 && Math.abs(elCol - col) <= 1) {
+      el.cardDiv.classList.add("technique-highlight", "portrait-highlight");
+    } else {
+      el.cardDiv.classList.add("technique-dim");
+    }
+  });
+}
+
+function applyCross() {
+  if (!currentSignificator) {
+    alert("먼저 시그니피케이터를 선택해주세요.");
+    return;
+  }
+  
+  const h = currentSignificator.house;
+  const row = Math.ceil(h / 8);
+  const col = ((h - 1) % 8) + 1;
+  
+  // 십자가 (상하좌우)
+  cardElements.forEach(el => {
+    const elRow = Math.ceil(el.house / 8);
+    const elCol = ((el.house - 1) % 8) + 1;
+    
+    if ((elRow === row && Math.abs(elCol - col) === 1) || 
+        (elCol === col && Math.abs(elRow - row) === 1)) {
+      el.cardDiv.classList.add("technique-highlight", "cross-highlight");
+    } else if (el.house === h) {
+      el.cardDiv.classList.add("technique-highlight", "cross-highlight");
+    } else {
+      el.cardDiv.classList.add("technique-dim");
+    }
+  });
+}
+
+function applyHouse() {
+  // 모든 카드를 하우스로 읽기 (전체 표시)
+  cardElements.forEach(el => {
+    el.cardDiv.classList.add("technique-highlight", "house-highlight");
+  });
+}
+
+function applyOverall() {
+  // 전체 분위기 - 모든 카드 표시
+  cardElements.forEach(el => {
+    el.cardDiv.classList.add("technique-highlight");
+  });
+}
+
+function showTechniqueGuide(technique) {
+  const guides = {
+    'first-line': {
+      title: '1·2·3 하우스 (첫 줄 요약)',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 첫 번째 줄(1-8번 하우스)은 전체 상황의 요약입니다.</p>
+        <p>• 1-2-3번 하우스: 과거 → 현재 → 미래의 흐름</p>
+        <p>• 4-5번: 기반과 뿌리, 안정성</p>
+        <p>• 6-7번: 현재의 문제나 도전</p>
+        <p>• 8번: 결과나 결론</p>
+        <p class="tip">💡 팁: 이 줄만으로도 전체 이야기를 파악할 수 있습니다.</p>
+      `
+    },
+    'chain': {
+      title: '체인 기법',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 시그니피케이터와 같은 행: 현재 상황과 주변 환경</p>
+        <p>• 시그니피케이터와 같은 열: 과거에서 미래로의 흐름</p>
+        <p>• 대각선: 숨겨진 영향이나 간접적인 요소</p>
+        <p class="tip">💡 팁: 행은 '지금 무슨 일이?', 열은 '어디로 가고 있나?'를 보여줍니다.</p>
+      `
+    },
+    'portrait': {
+      title: '초상화 기법',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 시그니피케이터 주변 8장의 카드를 봅니다.</p>
+        <p>• 위: 생각과 의식</p>
+        <p>• 아래: 무의식과 감정</p>
+        <p>• 좌우: 과거와 미래, 주변 상황</p>
+        <p>• 대각선: 간접적 영향</p>
+        <p class="tip">💡 팁: 가장 가까운 카드가 가장 강한 영향을 줍니다.</p>
+      `
+    },
+    'cross': {
+      title: '십자가 기법',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 위: 목표, 의식, 생각</p>
+        <p>• 아래: 기반, 무의식, 과거</p>
+        <p>• 왼쪽: 떠나가는 것, 과거</p>
+        <p>• 오른쪽: 다가오는 것, 미래</p>
+        <p class="tip">💡 팁: 상하좌우 4장만으로 핵심을 빠르게 파악할 수 있습니다.</p>
+      `
+    },
+    'house': {
+      title: '하우스 해석',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 각 카드가 놓인 하우스 번호의 의미를 함께 읽습니다.</p>
+        <p>• 예: 24번(Heart) 카드가 10번 하우스(Scythe)에 있다면</p>
+        <p>  → 사랑(Heart)의 갑작스러운 결단(Scythe)</p>
+        <p>• 카드의 본래 의미 + 하우스의 의미 = 복합 해석</p>
+        <p class="tip">💡 팁: 하우스 이름을 켜서 함께 보면 더 쉽습니다.</p>
+      `
+    },
+    'overall': {
+      title: '전체 분위기 & 결론',
+      content: `
+        <p><strong>📌 읽는 방법:</strong></p>
+        <p>• 긍정 카드와 부정 카드의 비율을 봅니다.</p>
+        <p>• 특정 테마(사랑, 돈, 건강)의 카드가 집중된 곳을 찾습니다.</p>
+        <p>• 강한 카드(Sun, Key, Cross 등)의 위치를 확인합니다.</p>
+        <p>• 마지막 4장(33-36번)은 최종 결과를 나타냅니다.</p>
+        <p class="tip">💡 팁: 전체를 보고 첫인상과 느낌을 신뢰하세요.</p>
+      `
+    }
+  };
+  
+  const guide = guides[technique];
+  if (guide) {
+    const guideDiv = document.getElementById('technique-guide-display') || createGuideDisplay();
+    guideDiv.innerHTML = `
+      <h4>${guide.title}</h4>
+      ${guide.content}
+    `;
+    guideDiv.classList.add('show');
+  }
+}
+
+function createGuideDisplay() {
+  const guideDiv = document.createElement('div');
+  guideDiv.id = 'technique-guide-display';
+  guideDiv.className = 'technique-guide-display';
+  
+  const readingSection = document.querySelector('.reading-section:nth-of-type(3)');
+  readingSection.appendChild(guideDiv);
+  
+  return guideDiv;
+}
 
 aiInterpretBtn.onclick = async () => {
   if (!currentQuestion) {
