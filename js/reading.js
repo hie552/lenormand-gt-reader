@@ -304,27 +304,44 @@ async function generateAIInterpretationForTechnique() {
 async function generateTechniqueSpecificInterpretation() {
   const highlightedCards = getHighlightedCards();
   
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
-      messages: [
-        {
-          role: "user",
-          content: generateTechniquePrompt(highlightedCards)
-        }
-      ],
-    })
-  });
-  
-  const data = await response.json();
-  return data.content[0].text;
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2000,
+        messages: [
+          {
+            role: "user",
+            content: generateTechniquePrompt(highlightedCards)
+          }
+        ]
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("API Error:", errorData);
+      throw new Error(`API 요청 실패: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.content || !data.content[0] || !data.content[0].text) {
+      console.error("Invalid response format:", data);
+      throw new Error("응답 형식이 올바르지 않습니다.");
+    }
+    
+    return data.content[0].text;
+  } catch (error) {
+    console.error("AI 해석 오류:", error);
+    throw error;
+  }
 }
-
 function getHighlightedCards() {
   const highlighted = [];
   
@@ -795,3 +812,4 @@ function displayInterpretation(text) {
   
   aiResult.innerHTML = html;
 }
+
